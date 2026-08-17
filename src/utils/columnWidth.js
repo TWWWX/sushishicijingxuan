@@ -67,7 +67,7 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
 
   for (let c = 0; c < colCount; c++) {
     if (!hasTdContent[c]) {
-      maxWidths[c] = 40;
+      maxWidths[c] = 250;
       continue;
     }
     const th = thCells[c];
@@ -75,7 +75,7 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
       const w = measureCellTextWidth(th, false);
       if (w > maxWidths[c]) maxWidths[c] = w;
     }
-    maxWidths[c] = Math.ceil(maxWidths[c]) + 2;
+    maxWidths[c] = Math.ceil(maxWidths[c]) + 10;
   }
 
   for (let c = 0; c < colCount; c++) {
