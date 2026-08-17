@@ -7,7 +7,11 @@
       <ControlBar
         :current-mode="mode"
         :filler-name.sync="fillerName"
+        :zoom="zoom"
         @switch-mode="switchMode"
+        @zoom-in="zoomIn"
+        @zoom-out="zoomOut"
+        @zoom-reset="zoomReset"
         @export-csv="handleExportCSV"
         @export-png="handleExportPNG"
         @reset="handleReset"
@@ -17,24 +21,26 @@
     <div v-if="!mode" class="author-note">作者的话：……</div>
 
     <template v-else>
-      <TournamentTable
-        :key="'t-' + mode"
-        :cell-data="currentState.cellData"
-        :fill-target-map="currentState.fillTargetMap"
-        :col-hide-content="currentState.colHideContent"
-        :column-config="meta.columnConfig"
-        :header-labels="meta.headerLabels"
-        :total-rows="totalRows"
-        @header-dblclick="handleHeaderDblClick"
-        @cell-click="handleCellClick"
-        @cell-edit="handleCellEdit"
-      />
-      <DlcPanel
-        :key="'d-' + mode"
-        :dlc-data="currentState.dlcData"
-        :selected-dlc-idx="currentState.selectedDlcIdx"
-        @dlc-select="handleDlcSelect"
-      />
+      <div class="zoomable-wrapper" :style="{ transform: `scale(${zoom})`, transformOrigin: 'top left', width: `${100 / zoom}%` }">
+        <TournamentTable
+          :key="'t-' + mode"
+          :cell-data="currentState.cellData"
+          :fill-target-map="currentState.fillTargetMap"
+          :col-hide-content="currentState.colHideContent"
+          :column-config="meta.columnConfig"
+          :header-labels="meta.headerLabels"
+          :total-rows="totalRows"
+          @header-dblclick="handleHeaderDblClick"
+          @cell-click="handleCellClick"
+          @cell-edit="handleCellEdit"
+        />
+        <DlcPanel
+          :key="'d-' + mode"
+          :dlc-data="currentState.dlcData"
+          :selected-dlc-idx="currentState.selectedDlcIdx"
+          @dlc-select="handleDlcSelect"
+        />
+      </div>
     </template>
 
     <LoadingMask :visible="loadingVisible" :text="loadingText" />
@@ -100,6 +106,7 @@ export default {
     return {
       fillerName: '',
       mode: null,
+      zoom: 1,
       loadingVisible: false,
       loadingText: '正在处理...',
       perMode: {
@@ -129,6 +136,9 @@ export default {
     }
   },
   methods: {
+    zoomIn() { this.zoom = Math.min(2, Math.round((this.zoom + 0.1) * 10) / 10); },
+    zoomOut() { this.zoom = Math.max(0.4, Math.round((this.zoom - 0.1) * 10) / 10); },
+    zoomReset() { this.zoom = 1; },
     showLoading(text) {
       this.loadingText = text || '正在处理...';
       this.loadingVisible = true;
@@ -340,10 +350,11 @@ export default {
       ]);
     },
     async switchMode(newMode) {
-      if (!newMode || this.mode === newMode) return;
-      if (!MODE_META[newMode]) return;
+      if (this.mode === newMode) return;
       this.mode = newMode;
-      await this.ensureLoaded(newMode);
+      if (newMode != null && MODE_META[newMode]) {
+        await this.ensureLoaded(newMode);
+      }
       this.scheduleAutoFitAll();
     }
   }

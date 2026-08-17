@@ -109,7 +109,7 @@ export async function exportPNG(options) {
     middleSpan.style.textAlign = 'center';
     middleSpan.style.flex = '1';
     middleSpan.style.fontSize = '11px';
-    middleSpan.textContent = '欢迎关注公众号【东坡墙】 QQ【3301590656】';
+    middleSpan.textContent = '欢迎关注公众号【东坡墙】、QQ【3301590656】';
     subDiv.appendChild(middleSpan);
 
     const rightSpan = document.createElement('span');
@@ -144,7 +144,7 @@ export async function exportPNG(options) {
     canvas.toBlob((blob) => {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = (title || '苏轼诗文作品') + '_' + formatDate() + '.png';
+      link.download = (title || '苏轼诗文作品_东坡墙出品') + '_' + formatDate() + '.png';
       link.click();
       URL.revokeObjectURL(link.href);
       if (hide) hide();

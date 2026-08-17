@@ -14,9 +14,9 @@ export function measureCellTextWidth(cell, titleOnly) {
   clone.style.maxWidth = 'none';
   clone.style.whiteSpace = 'nowrap';
   const cs = getComputedStyle(cell);
-  clone.style.padding = cs.padding;
-  clone.style.border = cs.border;
-  clone.style.boxSizing = 'border-box';
+  clone.style.padding = '0';
+  clone.style.border = '0';
+  clone.style.boxSizing = 'content-box';
   clone.style.font = cs.font;
   clone.style.fontSize = cs.fontSize;
   clone.style.lineHeight = cs.lineHeight;
@@ -71,10 +71,8 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
     }
   }
 
-  const MIN_W_DEFAULT = 140;
   for (let c = 0; c < colCount; c++) {
-    if (maxWidths[c] < MIN_W_DEFAULT) maxWidths[c] = MIN_W_DEFAULT;
-    maxWidths[c] = Math.ceil(maxWidths[c]) + 4;
+    maxWidths[c] = Math.ceil(maxWidths[c]) + 2;
   }
 
   for (let c = 0; c < colCount; c++) {
