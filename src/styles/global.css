@@ -1,0 +1,329 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Songti SC", serif;
+  background: #eef3ed;
+  padding: 16px;
+  min-height: 100vh;
+  color: #2c3e2c;
+}
+.header {
+  max-width: 100%;
+  margin-bottom: 8px;
+}
+.page-title {
+  text-align: center;
+  color: #4a7a52;
+  margin-bottom: 8px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  border-bottom: 1px solid #b8cdb8;
+  padding-bottom: 8px;
+}
+.hint {
+  text-align: center;
+  color: #6b866b;
+  margin-bottom: 8px;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.btn-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  padding: 8px;
+  background: #f5f8f4;
+  border: 1px solid #cfdccd;
+  border-radius: 2px;
+}
+.filler-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 10px;
+  font-size: 14px;
+  color: #4a7a52;
+}
+.filler-field input {
+  padding: 5px 8px;
+  border: 1px solid #b8cdb8;
+  border-radius: 2px;
+  font-size: 13px;
+  outline: none;
+  background: #fff;
+  color: #2c3e2c;
+  min-width: 120px;
+  font-family: inherit;
+}
+.filler-field input:focus { border-color: #6a9d72; }
+.btn {
+  padding: 6px 16px;
+  border: 1px solid #7aa380;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+.btn-csv { background: #ddeee0; color: #3e6b45; }
+.btn-csv:hover { background: #c8e3cd; border-color: #5e8f66; }
+.btn-png { background: #d8e7e5; color: #3a6b67; border-color: #74a39f; }
+.btn-png:hover { background: #c0d6d3; border-color: #568a86; }
+.btn-reset { background: #eae5d6; color: #6d5a2e; border-color: #b8a878; }
+.btn-reset:hover { background: #ded8c2; border-color: #a08e5e; }
+
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 78vh;
+  background: #fff;
+  border: 1px solid #cfdccd;
+  border-radius: 2px;
+  padding: 2px;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 100%;
+  width: max-content;
+  table-layout: fixed;
+}
+th {
+  background: #6a9d72;
+  color: #f8faf7;
+  padding: 5px 6px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  border: 1px solid #5a8a62;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  letter-spacing: 1px;
+  cursor: pointer;
+  user-select: none;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+th.col-0 { padding: 5px 8px; font-size: 12px; }
+th.col-1 { padding: 5px 6px; font-size: 13px; }
+th.hide-col { background: #8fae93 !important; font-style: italic; }
+th.hide-col::after {
+  content: '（藏内容）';
+  margin-left: 6px;
+  font-size: 10px;
+  opacity: 0.9;
+}
+th:first-child { border-radius: 2px 0 0 0; }
+th:last-child { border-radius: 0 2px 0 0; }
+
+td {
+  border: 1px solid #dde7dd;
+  padding: 4px 4px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 13px;
+  line-height: 1.35;
+  word-wrap: break-word;
+  word-break: break-all;
+  background: #fff;
+  transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+td.col-0 {
+  padding: 3px 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  background: #fcfdfb;
+}
+td.col-0.source-cell { background: #e3f1e5; }
+td.col-0 .poem-title { font-size: 12px; margin-bottom: 2px; }
+td.col-0 .poem-content { font-size: 11px; }
+td.col-1 {
+  padding: 3px 5px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+td.col-1 .poem-title { font-size: 13px; margin-bottom: 2px; }
+td.col-1 .poem-content { font-size: 11px; }
+td.dlc-selected-col {
+  outline: 1px solid #6a9d72;
+  outline-offset: -1px;
+}
+tr.hide-poem-content td .poem-content,
+table.hide-poem-content td .poem-content { display: none; }
+td.hide-poem-content .poem-content { display: none; }
+td:hover { background: #f0f7ef; border-color: #8bb691; }
+td.empty { background: #f8faf7; cursor: default; }
+td.empty:hover { background: #f8faf7; border-color: #dde7dd; }
+td.source-cell { background: #e3f1e5; }
+td.source-cell:hover { background: #d4e9d7; }
+td[contenteditable="true"] {
+  background: #eaf3ed;
+  border-color: #5e8f66;
+  outline: none;
+  cursor: text;
+}
+.poem-title {
+  font-weight: 600;
+  color: #4a7a52;
+  margin-bottom: 3px;
+  display: block;
+  font-size: 14px;
+  line-height: 1.3;
+}
+.poem-content {
+  color: #4e5b4e;
+  font-size: 12px;
+  line-height: 1.35;
+  display: block;
+}
+.export-header-row th {
+  background: #f5f8f4 !important;
+  color: #4a7a52 !important;
+  border: 1px solid #cfdccd !important;
+}
+.champion-cell { background: #eaf3ed !important; border-color: #6a9d72 !important; }
+.champion-cell .poem-title { color: #3e6b45 !important; }
+
+.dlc-section { margin-top: 20px; }
+.dlc-title {
+  text-align: center;
+  color: #4a7a52;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #b8cdb8;
+}
+.dlc-hint {
+  text-align: center;
+  color: #6b866b;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.dlc-wrapper {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #cfdccd;
+  border-radius: 2px;
+  padding: 4px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+#dlcTable {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+#dlcTable th {
+  background: #7a8f9b;
+  color: #f8faf7;
+  padding: 5px 6px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid #637782;
+  letter-spacing: 1px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+#dlcTable td {
+  border: 1px solid #dde3e7;
+  padding: 3px 6px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.35;
+  background: #fcfdfb;
+  cursor: pointer;
+  word-wrap: break-word;
+  word-break: break-all;
+  transition: all 0.15s;
+}
+#dlcTable td.selected {
+  background: #e3f1e5;
+  border-color: #6a9d72;
+  box-shadow: inset 0 0 0 1px #6a9d72;
+}
+#dlcTable td:hover { background: #eef6ef; border-color: #6a9d72; }
+#dlcTable td .poem-title { font-size: 12px; margin-bottom: 2px; }
+#dlcTable td .poem-content { font-size: 11px; }
+
+.loading-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(50, 70, 50, 0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.loading-mask.active { display: flex; }
+.loading-box {
+  background: white;
+  padding: 24px 32px;
+  border: 1px solid #cfdccd;
+  border-radius: 2px;
+  text-align: center;
+  color: #4a7a52;
+}
+.spinner {
+  width: 32px; height: 32px;
+  border: 3px solid #e5efe6;
+  border-top: 3px solid #6a9d72;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  html { font-size: 11px; }
+  body { padding: 4px; }
+  .page-title { font-size: 14px; letter-spacing: 2px; padding-bottom: 4px; margin-bottom: 4px; }
+  .hint { font-size: 9px; margin-bottom: 4px; }
+  .btn-bar { gap: 4px; padding: 4px; margin-bottom: 4px; }
+  .filler-field { font-size: 10px; margin-right: 3px; }
+  .filler-field input { padding: 3px 4px; font-size: 9px; min-width: 75px; }
+  .btn { padding: 4px 8px; font-size: 9px; }
+  th, td { font-size: 9px; padding: 1px 1px; line-height: 1.2; }
+  th { font-size: 9px; padding: 1px 1px; letter-spacing: 0; }
+  th.col-0 { font-size: 9px; padding: 1px 2px; }
+  td.col-0 {
+    padding: 1px 2px;
+    font-size: 8.3px;
+    line-height: 1.2;
+  }
+  td.col-0 .poem-title { font-size: 9px; margin-bottom: 0px; }
+  td.col-0 .poem-content { font-size: 8px; }
+  th.col-1, td.col-1 { font-size: 8.7px; padding: 1px 1px; }
+  td.col-1 .poem-title { font-size: 9.6px; margin-bottom: 0px; }
+  td.col-1 .poem-content { font-size: 8.5px; }
+  .poem-title { font-size: 10px; margin-bottom: 0px; }
+  .poem-content { font-size: 8.8px; }
+  .dlc-section { margin-top: 10px; }
+  .dlc-title { font-size: 12px; letter-spacing: 2px; padding-bottom: 3px; margin-bottom: 4px; }
+  .dlc-hint { font-size: 9px; margin-bottom: 4px; }
+  .dlc-wrapper { padding: 1px; max-height: 40vh; }
+  #dlcTable td, #dlcTable th { padding: 1px 2px; font-size: 8.3px; }
+  #dlcTable th { padding: 1px 1px; font-size: 9px; }
+  #dlcTable td .poem-title { font-size: 9px; }
+  #dlcTable td .poem-content { font-size: 8px; }
+  .table-wrapper { max-height: 70vh; padding: 1px; }
+  .loading-box { padding: 14px 18px; }
+}
