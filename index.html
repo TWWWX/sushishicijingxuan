@@ -581,7 +581,13 @@ function updateCellDom(key) {
   });
 }
 
+let _justFinishedEdit = 0;
+
 function handleCellClick(e) {
+  if (_justFinishedEdit > 0) {
+    _justFinishedEdit--;
+    return;
+  }
   const td = e.currentTarget;
   if (td.getAttribute('contenteditable') === 'true') return;
   
@@ -627,7 +633,7 @@ function handleCellDblClick(e) {
   td.focus();
   document.execCommand('selectAll', false, null);
   
-  function finishEdit() {
+  function finishEdit(trigger) {
     td.removeAttribute('contenteditable');
     const text = td.innerText.trim();
     const oldVal = cellData[key];
@@ -648,23 +654,30 @@ function handleCellDblClick(e) {
       propagateDown(key);
     }
     
-    td.removeEventListener('blur', finishEdit);
+    if (trigger === 'blur') {
+      _justFinishedEdit = 1;
+      setTimeout(() => { _justFinishedEdit = 0; }, 0);
+    }
+    
+    td.removeEventListener('blur', handleBlur);
     td.removeEventListener('keydown', handleKey);
   }
+  
+  function handleBlur() { finishEdit('blur'); }
   
   function handleKey(ev) {
     if (ev.key === 'Enter' && !ev.shiftKey) {
       ev.preventDefault();
-      finishEdit();
+      finishEdit('enter');
     }
     if (ev.key === 'Escape') {
       ev.preventDefault();
-      finishEdit();
+      finishEdit('escape');
     }
   }
   
   setTimeout(() => {
-    td.addEventListener('blur', finishEdit);
+    td.addEventListener('blur', handleBlur);
     td.addEventListener('keydown', handleKey);
   }, 0);
 }
