@@ -89,14 +89,35 @@ export async function exportPNG(options) {
     exportContainer.appendChild(titleDiv);
 
     const subDiv = document.createElement('div');
-    subDiv.style.textAlign = 'center';
+    subDiv.style.display = 'flex';
+    subDiv.style.justifyContent = 'space-between';
+    subDiv.style.alignItems = 'center';
     subDiv.style.color = '#6b866b';
-    subDiv.style.fontSize = '14px';
-    subDiv.style.padding = '8px';
+    subDiv.style.padding = '6px 10px';
     subDiv.style.fontWeight = '400';
     subDiv.style.background = '#f5f8f4';
     subDiv.style.borderBottom = '1px solid #cfdccd';
-    subDiv.textContent = '网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 填表人：' + safeName + ' 欢迎关注公众号【东坡墙】 QQ【3301590656】';
+    subDiv.style.fontSize = '14px';
+
+    const leftSpan = document.createElement('span');
+    leftSpan.style.textAlign = 'left';
+    leftSpan.style.flex = '1';
+    leftSpan.textContent = '网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀';
+    subDiv.appendChild(leftSpan);
+
+    const middleSpan = document.createElement('span');
+    middleSpan.style.textAlign = 'center';
+    middleSpan.style.flex = '1';
+    middleSpan.style.fontSize = '11px';
+    middleSpan.textContent = '欢迎关注公众号【东坡墙】 QQ【3301590656】';
+    subDiv.appendChild(middleSpan);
+
+    const rightSpan = document.createElement('span');
+    rightSpan.style.textAlign = 'right';
+    rightSpan.style.flex = '1';
+    rightSpan.textContent = '填表人：' + safeName;
+    subDiv.appendChild(rightSpan);
+
     exportContainer.appendChild(subDiv);
 
     const mainClone = document.getElementById('tournamentTable').cloneNode(true);

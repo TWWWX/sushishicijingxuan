@@ -3,7 +3,6 @@
     <div class="header">
       <h1 class="page-title">{{ pageTitle }}</h1>
       <p class="hint">单击单元格 &rarr; 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 &rarr; 编辑内容，第一列也可修改 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 &harr; 隐藏/显示该列诗文内容</p>
-      <p class="hint" v-if="mode">DLC操作：先单击选中DLC库中某格，再单击主表第一列任意格即可交换二者内容</p>
       <p class="hint">网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</p>
       <ControlBar
         :current-mode="mode"
@@ -289,7 +288,7 @@ export default {
     },
     handleReset() {
       if (!this.mode) return;
-      if (!confirm('确定要清空表格并恢复初始状态吗？第一列诗文将恢复原文，其他列将全部清空。')) return;
+      if (!confirm('确定要清空表格并恢复初始状态吗？当前表格第一列诗文将恢复原文，其他列将全部清空。')) return;
       const m = this.mode;
       this.resetModeState(m, false);
       this.$nextTick(() => {

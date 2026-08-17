@@ -40,11 +40,11 @@ export const MODE_META = {
     columnConfig: [
       { count: 256, rowSpan: 1 },
       { count: 64,  rowSpan: 4 },
-      { count: 16,  rowSpan: 4 },
-      { count: 8,   rowSpan: 2 },
-      { count: 4,   rowSpan: 2 },
-      { count: 2,   rowSpan: 2 },
-      { count: 1,   rowSpan: 2 }
+      { count: 16,  rowSpan: 16 },
+      { count: 8,   rowSpan: 32 },
+      { count: 4,   rowSpan: 64 },
+      { count: 2,   rowSpan: 128 },
+      { count: 1,   rowSpan: 256 }
     ],
     headerLabels: [
       '256篇苏轼诗文',

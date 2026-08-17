@@ -3,7 +3,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Songti SC", serif;
   background: #eef3ed;
-  padding: 4px;
+  padding: 20px;
   min-height: 100vh;
   color: #2c3e2c;
 }
@@ -50,9 +50,9 @@ body {
 }
 .btn-mode:hover:not(.disabled) { background: #c8e3cd; border-color: #5e8f66; }
 .btn-mode.disabled {
-  background: #f0f2f0;
-  border-color: #c9d3ca;
-  color: #98a99b;
+  background: #3e6b45;
+  border-color: #3e6b45;
+  color: #ddeee0;
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -147,7 +147,7 @@ table {
 th {
   background: #6a9d72;
   color: #f8faf7;
-  padding: 5px 4px;
+  padding: 1px 1px;
   text-align: center;
   font-weight: 600;
   font-size: 13px;
@@ -161,8 +161,8 @@ th {
   word-wrap: break-word;
   word-break: break-all;
 }
-th.col-0 { padding: 5px 6px; font-size: 12px; }
-th.col-1 { padding: 5px 4px; font-size: 13px; }
+th.col-0 { padding: 1px 1px; font-size: 12px; }
+th.col-1 { padding: 1px 1px; font-size: 13px; }
 th.hide-col { background: #8fae93 !important; font-style: italic; }
 th.hide-col::after {
   content: '（藏内容）';
@@ -175,7 +175,7 @@ th:last-child { border-radius: 0 2px 0 0; }
 
 td {
   border: 1px solid #dde7dd;
-  padding: 4px 3px;
+  padding: 1px 1px;
   text-align: center;
   vertical-align: middle;
   font-size: 13px;
@@ -188,7 +188,7 @@ td {
   position: relative;
 }
 td.col-0 {
-  padding: 3px 5px;
+  padding: 1px 1px;
   font-size: 11px;
   line-height: 1.3;
   background: #fcfdfb;
@@ -197,7 +197,7 @@ td.col-0.source-cell { background: #e3f1e5; }
 td.col-0 .poem-title { font-size: 12px; margin-bottom: 2px; }
 td.col-0 .poem-content { font-size: 11px; }
 td.col-1 {
-  padding: 3px 4px;
+  padding: 1px 1px;
   font-size: 12px;
   line-height: 1.3;
 }
