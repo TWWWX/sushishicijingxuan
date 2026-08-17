@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>苏轼诗文64选1</title>
+<title>苏轼诗文作品64选1</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Songti SC", serif;
   background: #eef3ed;
@@ -16,41 +17,62 @@ body {
 }
 .header {
   max-width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 .page-title {
   text-align: center;
   color: #4a7a52;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   font-size: 26px;
   font-weight: 700;
   letter-spacing: 4px;
   border-bottom: 1px solid #b8cdb8;
-  padding-bottom: 12px;
+  padding-bottom: 8px;
 }
 .hint {
   text-align: center;
   color: #6b866b;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   font-size: 13px;
   letter-spacing: 1px;
 }
 .btn-bar {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
-  padding: 12px;
+  margin-bottom: 8px;
+  padding: 8px;
   background: #f5f8f4;
   border: 1px solid #cfdccd;
   border-radius: 2px;
 }
+.filler-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 10px;
+  font-size: 14px;
+  color: #4a7a52;
+}
+.filler-field input {
+  padding: 5px 8px;
+  border: 1px solid #b8cdb8;
+  border-radius: 2px;
+  font-size: 13px;
+  outline: none;
+  background: #fff;
+  color: #2c3e2c;
+  min-width: 120px;
+  font-family: inherit;
+}
+.filler-field input:focus { border-color: #6a9d72; }
 .btn {
-  padding: 10px 22px;
+  padding: 6px 16px;
   border: 1px solid #7aa380;
   border-radius: 2px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -85,11 +107,11 @@ body {
 .table-wrapper {
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 82vh;
+  max-height: 78vh;
   background: #fff;
   border: 1px solid #cfdccd;
   border-radius: 2px;
-  padding: 6px;
+  padding: 2px;
 }
 table {
   border-collapse: separate;
@@ -100,10 +122,10 @@ table {
 th {
   background: #6a9d72;
   color: #f8faf7;
-  padding: 14px 10px;
+  padding: 5px 6px;
   text-align: center;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 13px;
   border: 1px solid #5a8a62;
   position: sticky;
   top: 0;
@@ -111,23 +133,41 @@ th {
   min-width: 200px;
   max-width: 280px;
   letter-spacing: 1px;
+  cursor: pointer;
+  user-select: none;
 }
 th.col-0 {
-  padding: 10px 12px;
-  font-size: 13px;
-  min-width: 380px;
+  padding: 5px 8px;
+  font-size: 12px;
+  min-width: 320px;
   max-width: none;
-  width: 380px;
+  width: 320px;
+}
+th.col-1 {
+  padding: 5px 6px;
+  font-size: 13px;
+  min-width: 190px;
+  max-width: 260px;
+}
+th.hide-col {
+  background: #8fae93 !important;
+  font-style: italic;
+}
+th.hide-col::after {
+  content: '（藏内容）';
+  margin-left: 6px;
+  font-size: 10px;
+  opacity: 0.9;
 }
 th:first-child { border-radius: 2px 0 0 0; }
 th:last-child { border-radius: 0 2px 0 0; }
 td {
   border: 1px solid #dde7dd;
-  padding: 12px 10px;
+  padding: 4px 4px;
   text-align: center;
   vertical-align: middle;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 13px;
+  line-height: 1.35;
   min-width: 200px;
   max-width: 280px;
   word-wrap: break-word;
@@ -138,12 +178,12 @@ td {
   position: relative;
 }
 td.col-0 {
-  padding: 6px 12px;
+  padding: 3px 8px;
   font-size: 11px;
-  line-height: 1.4;
-  min-width: 380px;
+  line-height: 1.35;
+  min-width: 320px;
   max-width: none;
-  width: 380px;
+  width: 320px;
   background: #fcfdfb;
 }
 td.col-0.source-cell {
@@ -152,19 +192,31 @@ td.col-0.source-cell {
 td.col-0 .poem-title {
   font-size: 12px;
   margin-bottom: 2px;
-  display: inline;
-  margin-right: 6px;
-  white-space: nowrap;
 }
 td.col-0 .poem-content {
   font-size: 11px;
-  white-space: nowrap;
-  display: inline;
 }
-td.col-0 > span {
-  display: inline;
-  white-space: nowrap;
+td.col-1 {
+  padding: 3px 5px;
+  font-size: 12px;
+  line-height: 1.35;
+  min-width: 190px;
+  max-width: 260px;
 }
+td.col-1 .poem-title {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+td.col-1 .poem-content {
+  font-size: 11px;
+}
+td.dlc-selected-col {
+  outline: 2px dashed #c28a3b;
+  outline-offset: -2px;
+}
+tr.hide-poem-content td .poem-content,
+table.hide-poem-content td .poem-content { display: none; }
+td.hide-poem-content .poem-content { display: none; }
 td:hover {
   background: #f0f7ef;
   border-color: #8bb691;
@@ -192,13 +244,16 @@ td[contenteditable="true"] {
 .poem-title {
   font-weight: 600;
   color: #4a7a52;
-  margin-bottom: 6px;
+  margin-bottom: 3px;
   display: block;
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 1.3;
 }
 .poem-content {
   color: #4e5b4e;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.35;
+  display: block;
 }
 .export-header-row th {
   background: #f5f8f4 !important;
@@ -212,6 +267,80 @@ td[contenteditable="true"] {
 .champion-cell .poem-title {
   color: #3e6b45 !important;
 }
+.dlc-section {
+  margin-top: 20px;
+}
+.dlc-title {
+  text-align: center;
+  color: #4a7a52;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #b8cdb8;
+}
+.dlc-hint {
+  text-align: center;
+  color: #6b866b;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.dlc-wrapper {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #cfdccd;
+  border-radius: 2px;
+  padding: 4px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+#dlcTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+#dlcTable th {
+  background: #7a8f9b;
+  color: #f8faf7;
+  padding: 5px 6px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid #637782;
+  letter-spacing: 1px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+#dlcTable td {
+  border: 1px solid #dde3e7;
+  padding: 3px 6px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.35;
+  background: #fcfdfb;
+  cursor: pointer;
+  min-width: 220px;
+  max-width: 280px;
+  transition: all 0.15s;
+}
+#dlcTable td.selected {
+  background: #f6ead1;
+  border-color: #c28a3b;
+  box-shadow: inset 0 0 0 2px #e0b46a;
+}
+#dlcTable td:hover {
+  background: #f2ede2;
+  border-color: #a98955;
+}
+#dlcTable td .poem-title {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+#dlcTable td .poem-content {
+  font-size: 11px;
+}
 .loading-mask {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -224,65 +353,77 @@ td[contenteditable="true"] {
 .loading-mask.active { display: flex; }
 .loading-box {
   background: white;
-  padding: 28px 36px;
+  padding: 24px 32px;
   border: 1px solid #cfdccd;
   border-radius: 2px;
   text-align: center;
   color: #4a7a52;
 }
 .spinner {
-  width: 36px; height: 36px;
+  width: 32px; height: 32px;
   border: 3px solid #e5efe6;
   border-top: 3px solid #6a9d72;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin: 0 auto 14px;
+  margin: 0 auto 12px;
 }
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 @media (max-width: 768px) {
-  body { padding: 10px; }
-  .page-title { font-size: 20px; letter-spacing: 2px; }
-  .btn { padding: 9px 14px; font-size: 13px; }
-  .btn-bar { gap: 8px; padding: 10px; }
-  th, td { min-width: 160px; max-width: 220px; font-size: 12px; padding: 8px 6px; }
-  th.col-0, td.col-0 {
-    min-width: 280px;
+  html { font-size: 13px; }
+  body { padding: 6px; }
+  .page-title { font-size: 17px; letter-spacing: 2px; padding-bottom: 6px; margin-bottom: 6px; }
+  .hint { font-size: 11px; margin-bottom: 6px; }
+  .btn-bar { gap: 6px; padding: 6px; margin-bottom: 6px; }
+  .filler-field { font-size: 12px; margin-right: 4px; }
+  .filler-field input { padding: 4px 6px; font-size: 11px; min-width: 90px; }
+  .btn { padding: 5px 10px; font-size: 11px; }
+  th, td { min-width: 130px; max-width: 180px; font-size: 11px; padding: 3px 3px; line-height: 1.3; }
+  th { font-size: 11px; padding: 4px 4px; letter-spacing: 0; }
+  th.col-0 { font-size: 11px; min-width: 230px; padding: 4px 6px; }
+  td.col-0 {
+    min-width: 230px;
     max-width: none;
-    width: 280px;
-    padding: 5px 10px;
+    width: 230px;
+    padding: 3px 6px;
     font-size: 10px;
-    line-height: 1.35;
+    line-height: 1.3;
   }
-  td.col-0 .poem-title {
-    font-size: 11px;
-    margin-right: 5px;
-    display: inline;
-    white-space: nowrap;
+  td.col-0 .poem-title { font-size: 10px; margin-bottom: 1px; }
+  td.col-0 .poem-content { font-size: 9.5px; }
+  th.col-1, td.col-1 {
+    min-width: 125px; max-width: 170px; font-size: 10.5px; padding: 3px 3px;
   }
-  td.col-0 .poem-content {
-    font-size: 10px;
-    white-space: nowrap;
-    display: inline;
+  td.col-1 .poem-title { font-size: 11px; margin-bottom: 1px; }
+  td.col-1 .poem-content { font-size: 10px; }
+  .poem-title { font-size: 12px; margin-bottom: 2px; }
+  .poem-content { font-size: 10.5px; }
+  .dlc-title { font-size: 15px; letter-spacing: 2px; padding-bottom: 4px; margin-bottom: 6px; }
+  .dlc-hint { font-size: 11px; margin-bottom: 6px; }
+  .dlc-wrapper { padding: 3px; max-height: 40vh; }
+  #dlcTable td, #dlcTable th {
+    min-width: 160px; max-width: 220px; padding: 3px 4px; font-size: 10px;
   }
-  td.col-0 > span {
-    display: inline;
-    white-space: nowrap;
-  }
-  .poem-title { font-size: 14px; }
-  .poem-content { font-size: 11px; }
+  #dlcTable td .poem-title { font-size: 10.5px; }
+  #dlcTable td .poem-content { font-size: 9.5px; }
+  .table-wrapper { max-height: 70vh; padding: 1px; }
+  .loading-box { padding: 18px 22px; }
 }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1 class="page-title">苏轼诗文64选1</h1>
-  <p class="hint">单击单元格 &rarr; 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 &rarr; 编辑内容，第一列也可修改</p>
-  <p class="hint">制作：东坡墙@蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</p>
+  <h1 class="page-title">苏轼诗文作品64选1</h1>
+  <p class="hint">单击单元格 &rarr; 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 &rarr; 编辑内容，第一列也可修改 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 &harr; 隐藏/显示该列诗文内容</p>
+  <p class="hint">DLC操作：先单击选中DLC库中某格，再单击主表第一列任意格即可交换二者内容</p>
+  <p class="hint">网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</p>
   <div class="btn-bar">
+    <label class="filler-field">填表人：
+      <input id="fillerName" type="text" placeholder="——" maxlength="20" />
+    </label>
     <button class="btn btn-csv" onclick="exportCSV()">导出CSV</button>
     <button class="btn btn-png" onclick="exportPNG()">导出图片</button>
     <button class="btn btn-reset" onclick="resetTable()">清空表格</button>
@@ -292,18 +433,31 @@ td[contenteditable="true"] {
 <div class="table-wrapper" id="tableWrapper">
   <table id="tournamentTable">
     <thead>
-      <tr>
-        <th class="col-0">64篇苏轼诗文</th>
-        <th>前32</th>
-        <th>前16</th>
-        <th>前8</th>
-        <th>前4</th>
-        <th>前2</th>
-        <th>冠军</th>
+      <tr id="headerRow">
+        <th class="col-0" data-col="0">64篇苏轼诗文</th>
+        <th class="col-1" data-col="1">前32</th>
+        <th data-col="2">前16</th>
+        <th data-col="3">前8</th>
+        <th data-col="4">前4</th>
+        <th data-col="5">前2</th>
+        <th data-col="6">冠军</th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
   </table>
+</div>
+
+<div class="dlc-section">
+  <h2 class="dlc-title">DLC库</h2>
+  <p class="dlc-hint">（单击选中DLC条目，再点主表第一列任意格进行交换；支持内容联动同步）</p>
+  <div class="dlc-wrapper">
+    <table id="dlcTable">
+      <thead>
+        <tr id="dlcHeaderRow"></tr>
+      </thead>
+      <tbody id="dlcBody"></tbody>
+    </table>
+  </div>
 </div>
 
 <div class="loading-mask" id="loadingMask">
@@ -391,9 +545,14 @@ const columnConfig = [
   { count: 1, rowSpan: 64 }
 ];
 
+const DLC_COLS = 4;
+let dlcData = [];
+let selectedDlcIdx = null;
+
 const cellData = {};
 const fillSourceMap = {};
 const fillTargetMap = {};
+const colHideContent = [false, false, false, false, false, false, false];
 
 function formatPoemCell(data) {
   if (!data) return '';
@@ -470,6 +629,28 @@ function dataEqual(a, b) {
   return false;
 }
 
+function applyColHideContentToDom() {
+  const tbody = document.getElementById('tableBody');
+  const tds = tbody.querySelectorAll('td[data-col]');
+  tds.forEach(td => {
+    const c = parseInt(td.dataset.col);
+    if (colHideContent[c]) {
+      td.classList.add('hide-poem-content');
+    } else {
+      td.classList.remove('hide-poem-content');
+    }
+  });
+  const headerRow = document.getElementById('headerRow');
+  headerRow.querySelectorAll('th').forEach(th => {
+    const c = parseInt(th.dataset.col);
+    if (colHideContent[c]) {
+      th.classList.add('hide-col');
+    } else {
+      th.classList.remove('hide-col');
+    }
+  });
+}
+
 function buildTable() {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
@@ -489,6 +670,7 @@ function buildTable() {
         td.dataset.rowInCol = rowInCol;
         
         if (col === 0) td.classList.add('col-0');
+        if (col === 1) td.classList.add('col-1');
         if (col === 6) td.classList.add('champion-cell');
         
         if (col === 0) {
@@ -512,6 +694,7 @@ function buildTable() {
     }
     tbody.appendChild(tr);
   }
+  applyColHideContentToDom();
   refreshAllSourceStyles();
 }
 
@@ -593,9 +776,35 @@ function handleCellClick(e) {
   
   const col = parseInt(td.dataset.col);
   const rowInCol = parseInt(td.dataset.rowInCol);
-  const sourceKey = td.dataset.key;
+  const key = td.dataset.key;
   
-  if (cellData[sourceKey] === undefined) return;
+  if (col === 0 && selectedDlcIdx !== null && selectedDlcIdx >= 0 && selectedDlcIdx < dlcData.length) {
+    const mainCurrent = cellData[key] ? cloneData(cellData[key]) : null;
+    const dlcCurrent = cloneData(dlcData[selectedDlcIdx]);
+    
+    if (typeof mainCurrent === 'object' && mainCurrent.title !== undefined) {
+      dlcData[selectedDlcIdx] = { title: mainCurrent.title, content: mainCurrent.content || '' };
+    } else if (typeof mainCurrent === 'string') {
+      const parsed = parsePlainToPoem(mainCurrent);
+      dlcData[selectedDlcIdx] = parsed;
+    } else {
+      dlcData[selectedDlcIdx] = { title: '', content: '' };
+    }
+    
+    cellData[key] = { title: dlcCurrent.title, content: dlcCurrent.content };
+    
+    updateCellDom(key);
+    detachFromSource(key);
+    propagateDown(key);
+    refreshSourceStyle(key);
+    refreshAllSourceStyles();
+    
+    renderDlcTable();
+    selectedDlcIdx = null;
+    return;
+  }
+  
+  if (cellData[key] === undefined) return;
   if (col >= 6) return;
   
   const nextCol = col + 1;
@@ -603,12 +812,29 @@ function handleCellClick(e) {
   const nextRowInCol = Math.floor(rowInCol / 2);
   const targetKey = getCellKey(nextCol, nextRowInCol);
   
-  attachToSource(sourceKey, targetKey);
+  attachToSource(key, targetKey);
   
-  cellData[targetKey] = cloneData(cellData[sourceKey]);
+  cellData[targetKey] = cloneData(cellData[key]);
   updateCellDom(targetKey);
   
   propagateDown(targetKey);
+}
+
+function parsePlainToPoem(str) {
+  if (!str) return { title: '', content: '' };
+  str = str.replace(/\r/g, '').trim();
+  const lines = str.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  let title = null, content = '';
+  if (lines.length >= 2 && /《.+》/.test(lines[0])) {
+    title = lines[0]; content = lines.slice(1).join('');
+  } else if (lines.length === 1) {
+    const m = lines[0].match(/^(《[^》]+》)[\s:：]*(.*)$/);
+    if (m) { title = m[1]; content = m[2] || ''; }
+    else { content = lines[0]; }
+  } else {
+    content = lines.join(' ');
+  }
+  return { title: title || '', content: content };
 }
 
 function handleCellDblClick(e) {
@@ -648,6 +874,7 @@ function handleCellDblClick(e) {
     const changed = !dataEqual(oldVal, newVal);
     
     updateCellDom(key);
+    applyColHideContentToDom();
     
     if (changed) {
       detachFromSource(key);
@@ -680,6 +907,14 @@ function handleCellDblClick(e) {
     td.addEventListener('blur', handleBlur);
     td.addEventListener('keydown', handleKey);
   }, 0);
+}
+
+function handleHeaderDblClick(e) {
+  const th = e.currentTarget;
+  const col = parseInt(th.dataset.col);
+  if (isNaN(col)) return;
+  colHideContent[col] = !colHideContent[col];
+  applyColHideContentToDom();
 }
 
 function exportCSV() {
@@ -723,7 +958,7 @@ function exportCSV() {
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = '苏轼诗文64选1_' + formatDate() + '.csv';
+  link.download = '苏轼诗文作品64选1_' + formatDate() + '.csv';
   link.click();
   URL.revokeObjectURL(link.href);
 }
@@ -734,6 +969,7 @@ async function exportPNG() {
   try {
     const tableWrapper = document.getElementById('tableWrapper');
     const table = document.getElementById('tournamentTable');
+    const fillerName = (document.getElementById('fillerName').value || '').trim() || '——';
     
     const prevOverflow = tableWrapper.style.overflow;
     const prevMaxHeight = tableWrapper.style.maxHeight;
@@ -748,7 +984,7 @@ async function exportPNG() {
       useCORS: true,
       logging: false,
       windowWidth: table.scrollWidth,
-      windowHeight: table.scrollHeight + 200,
+      windowHeight: table.scrollHeight + 300,
       onclone: (clonedDoc) => {
         const clonedTable = clonedDoc.getElementById('tournamentTable');
         const ths = clonedTable.querySelectorAll('th');
@@ -764,9 +1000,9 @@ async function exportPNG() {
         row1.className = 'export-header-row';
         const th1 = clonedDoc.createElement('th');
         th1.colSpan = 7;
-        th1.textContent = '苏轼诗文64选1';
+        th1.textContent = '苏轼诗文作品64选1';
         th1.style.fontSize = '26px';
-        th1.style.padding = '18px 10px';
+        th1.style.padding = '16px 10px';
         th1.style.fontWeight = '700';
         th1.style.letterSpacing = '4px';
         th1.style.color = '#4a7a52';
@@ -778,9 +1014,9 @@ async function exportPNG() {
         row2.className = 'export-header-row';
         const th2 = clonedDoc.createElement('th');
         th2.colSpan = 7;
-        th2.textContent = '制作：东坡墙@蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】';
+        th2.textContent = '网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 填表人：' + fillerName + ' 欢迎关注公众号【东坡墙】 QQ【3301590656】';
         th2.style.fontSize = '14px';
-        th2.style.padding = '10px';
+        th2.style.padding = '8px';
         th2.style.fontWeight = '400';
         th2.style.color = '#6b866b';
         th2.style.background = '#f5f8f4';
@@ -798,7 +1034,7 @@ async function exportPNG() {
     canvas.toBlob((blob) => {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = '苏轼诗文64选1_' + formatDate() + '.png';
+      link.download = '苏轼诗文作品64选1_' + formatDate() + '.png';
       link.click();
       URL.revokeObjectURL(link.href);
       hideLoading();
@@ -817,6 +1053,8 @@ function resetTable() {
   Object.keys(cellData).forEach(key => delete cellData[key]);
   Object.keys(fillSourceMap).forEach(k => delete fillSourceMap[k]);
   Object.keys(fillTargetMap).forEach(k => delete fillTargetMap[k]);
+  for (let i = 0; i < 7; i++) colHideContent[i] = false;
+  selectedDlcIdx = null;
   
   for (let i = 0; i < 64; i++) {
     const key = getCellKey(0, i);
@@ -825,6 +1063,8 @@ function resetTable() {
   }
   
   buildTable();
+  renderDlcTable();
+  document.getElementById('fillerName').value = '';
 }
 
 function formatDate() {
@@ -845,7 +1085,140 @@ function hideLoading() {
   document.getElementById('loadingMask').classList.remove('active');
 }
 
-buildTable();
+function parseDlcText(raw) {
+  raw = raw.replace(/\r/g, '').replace(/\u200c/g, '').replace(/\u200b/g, '').replace(/\ufeff/g, '').trim();
+  const result = [];
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    line = line.replace(/^"+/, '').replace(/"+$/, '').trim();
+    if (/^《[^》]+》/.test(line)) {
+      let title = line;
+      let content = '';
+      const nextIdx = i + 1;
+      if (nextIdx < lines.length) {
+        let next = lines[nextIdx].replace(/^"+/, '').replace(/"+$/, '').trim();
+        if (!/^《/.test(next)) {
+          content = next;
+          i = nextIdx;
+        }
+      }
+      result.push({ title: title, content: content });
+    } else if (line.length > 0) {
+      let next = '';
+      const nextIdx = i + 1;
+      if (nextIdx < lines.length && !/^《/.test(lines[nextIdx])) {
+        next = lines[nextIdx].replace(/^"+/, '').replace(/"+$/, '').trim();
+        i = nextIdx;
+      }
+      result.push({ title: '', content: line + (next ? ' ' + next : '') });
+    }
+  }
+  return result;
+}
+
+async function loadDlcFile() {
+  const url = '苏轼诗词精选64选1dlc.txt';
+  try {
+    const resp = await fetch(url, { cache: 'no-store' });
+    if (resp.ok) {
+      const text = await resp.text();
+      const parsed = parseDlcText(text);
+      if (parsed && parsed.length > 0) {
+        dlcData = parsed;
+        return;
+      }
+    }
+  } catch (e) {}
+  dlcData = [
+    {title:"《八声甘州·寄参寥子》", content:"西州路，不应回首，为我沾衣"},
+    {title:"《八月七日初入赣过惶恐滩》", content:"七千里外二毛人，十八滩头一叶身"},
+    {title:"《薄薄酒》", content:"薄薄酒，胜茶汤；粗粗布，胜无裳"},
+    {title:"《宝绘堂记》", content:"君子可以寓意于物，而不可以留意于物"},
+    {title:"《保母杨氏墓志铭》", content:"先夫人之妾杨氏，名金蝉，眉山人"},
+    {title:"《别海南黎民表》", content:"我本儋耳人，寄生西蜀州"},
+    {title:"《卜算子·黄州定慧院寓居作》", content:"拣尽寒枝不肯栖，寂寞沙洲冷"},
+    {title:"《补子瞻赠姜唐佐秀才》", content:"沧海何曾断地脉，白袍端合破天荒"},
+    {title:"《采桑子·润州多景楼与孙巨源相遇》", content:"多情多感仍多病，多景楼中，尊酒相逢"},
+    {title:"《超然台记》", content:"以见予之无所往而不乐者，盖游于物之外也"},
+    {title:"《晁错论》", content:"古之立大事者，不惟有超世之才，亦必有坚韧不拔之志"},
+    {title:"《朝云诗》", content:"予家有数妾，四五年相继辞去，独朝云者随予南迁"},
+    {title:"《潮州韩文公庙碑》", content:"文起八代之衰，而道济天下之溺"},
+    {title:"《澄迈驿通潮阁二首·其二》", content:"杳杳天低鹘没处，青山一发是中原"},
+    {title:"《赤壁赋》", content:"寄蜉蝣于天地，渺浮海之一粟"},
+    {title:"《出局偶书》", content:"倾杯不能饮，待得卯君来"}
+  ];
+}
+
+function renderDlcTable() {
+  const tbody = document.getElementById('dlcBody');
+  const theadRow = document.getElementById('dlcHeaderRow');
+  
+  theadRow.innerHTML = '';
+  for (let c = 0; c < DLC_COLS; c++) {
+    const th = document.createElement('th');
+    th.textContent = `DLC第${c+1}列`;
+    theadRow.appendChild(th);
+  }
+  
+  tbody.innerHTML = '';
+  const total = dlcData.length;
+  const rowCount = Math.ceil(total / DLC_COLS);
+  
+  for (let r = 0; r < rowCount; r++) {
+    const tr = document.createElement('tr');
+    for (let c = 0; c < DLC_COLS; c++) {
+      const idx = r * DLC_COLS + c;
+      const td = document.createElement('td');
+      if (idx < total) {
+        const item = dlcData[idx];
+        td.dataset.dlcIdx = idx;
+        td.innerHTML = formatPoemCell(item);
+        td.addEventListener('click', () => selectDlc(idx));
+        if (selectedDlcIdx === idx) td.classList.add('selected');
+      } else {
+        td.innerHTML = '&nbsp;';
+        td.style.background = '#f8faf7';
+        td.style.cursor = 'default';
+      }
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+}
+
+function selectDlc(idx) {
+  if (idx < 0 || idx >= dlcData.length) return;
+  selectedDlcIdx = (selectedDlcIdx === idx) ? null : idx;
+  
+  const oldHighlight = document.querySelector('#tournamentTable td.dlc-selected-col');
+  if (oldHighlight) oldHighlight.classList.remove('dlc-selected-col');
+  if (selectedDlcIdx !== null) {
+    document.querySelectorAll('#tournamentTable td.col-0').forEach(td => {
+      td.classList.add('dlc-selected-col');
+    });
+  }
+  
+  const allTds = document.querySelectorAll('#dlcTable td[data-dlc-idx]');
+  allTds.forEach(td => {
+    const i = parseInt(td.dataset.dlcIdx);
+    if (i === selectedDlcIdx) {
+      td.classList.add('selected');
+    } else {
+      td.classList.remove('selected');
+    }
+  });
+}
+
+document.getElementById('headerRow').querySelectorAll('th').forEach(th => {
+  th.addEventListener('dblclick', handleHeaderDblClick);
+});
+
+(async function init() {
+  buildTable();
+  await loadDlcFile();
+  renderDlcTable();
+})();
 </script>
 </body>
 </html>
