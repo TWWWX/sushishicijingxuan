@@ -118,6 +118,7 @@ table {
   border-spacing: 0;
   min-width: 100%;
   width: max-content;
+  table-layout: fixed;
 }
 th {
   background: #6a9d72;
@@ -130,24 +131,19 @@ th {
   position: sticky;
   top: 0;
   z-index: 10;
-  min-width: 200px;
-  max-width: 280px;
   letter-spacing: 1px;
   cursor: pointer;
   user-select: none;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 th.col-0 {
   padding: 5px 8px;
   font-size: 12px;
-  min-width: 320px;
-  max-width: none;
-  width: 320px;
 }
 th.col-1 {
   padding: 5px 6px;
   font-size: 13px;
-  min-width: 190px;
-  max-width: 260px;
 }
 th.hide-col {
   background: #8fae93 !important;
@@ -168,8 +164,6 @@ td {
   vertical-align: middle;
   font-size: 13px;
   line-height: 1.35;
-  min-width: 200px;
-  max-width: 280px;
   word-wrap: break-word;
   word-break: break-all;
   background: #fff;
@@ -181,9 +175,6 @@ td.col-0 {
   padding: 3px 8px;
   font-size: 11px;
   line-height: 1.35;
-  min-width: 320px;
-  max-width: none;
-  width: 320px;
   background: #fcfdfb;
 }
 td.col-0.source-cell {
@@ -200,8 +191,6 @@ td.col-1 {
   padding: 3px 5px;
   font-size: 12px;
   line-height: 1.35;
-  min-width: 190px;
-  max-width: 260px;
 }
 td.col-1 .poem-title {
   font-size: 13px;
@@ -296,9 +285,11 @@ td[contenteditable="true"] {
   overflow-y: auto;
 }
 #dlcTable {
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
 }
 #dlcTable th {
   background: #7a8f9b;
@@ -311,6 +302,8 @@ td[contenteditable="true"] {
   position: sticky;
   top: 0;
   z-index: 5;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 #dlcTable td {
   border: 1px solid #dde3e7;
@@ -321,8 +314,8 @@ td[contenteditable="true"] {
   line-height: 1.35;
   background: #fcfdfb;
   cursor: pointer;
-  min-width: 220px;
-  max-width: 280px;
+  word-wrap: break-word;
+  word-break: break-all;
   transition: all 0.15s;
 }
 #dlcTable td.selected {
@@ -380,13 +373,10 @@ td[contenteditable="true"] {
   .filler-field { font-size: 10px; margin-right: 3px; }
   .filler-field input { padding: 3px 4px; font-size: 9px; min-width: 75px; }
   .btn { padding: 4px 8px; font-size: 9px; }
-  th, td { min-width: 108px; max-width: 150px; font-size: 9px; padding: 1px 1px; line-height: 1.2; }
+  th, td { font-size: 9px; padding: 1px 1px; line-height: 1.2; }
   th { font-size: 9px; padding: 1px 1px; letter-spacing: 0; }
-  th.col-0 { font-size: 9px; min-width: 190px; padding: 1px 2px; }
+  th.col-0 { font-size: 9px; padding: 1px 2px; }
   td.col-0 {
-    min-width: 190px;
-    max-width: none;
-    width: 190px;
     padding: 1px 2px;
     font-size: 8.3px;
     line-height: 1.2;
@@ -394,7 +384,7 @@ td[contenteditable="true"] {
   td.col-0 .poem-title { font-size: 9px; margin-bottom: 0px; }
   td.col-0 .poem-content { font-size: 8px; }
   th.col-1, td.col-1 {
-    min-width: 104px; max-width: 142px; font-size: 8.7px; padding: 1px 1px;
+    font-size: 8.7px; padding: 1px 1px;
   }
   td.col-1 .poem-title { font-size: 9.6px; margin-bottom: 0px; }
   td.col-1 .poem-content { font-size: 8.5px; }
@@ -405,7 +395,7 @@ td[contenteditable="true"] {
   .dlc-hint { font-size: 9px; margin-bottom: 4px; }
   .dlc-wrapper { padding: 1px; max-height: 40vh; }
   #dlcTable td, #dlcTable th {
-    min-width: 133px; max-width: 183px; padding: 1px 2px; font-size: 8.3px;
+    padding: 1px 2px; font-size: 8.3px;
   }
   #dlcTable th { padding: 1px 1px; font-size: 9px; }
   #dlcTable td .poem-title { font-size: 9px; }
@@ -424,7 +414,7 @@ td[contenteditable="true"] {
   <p class="hint">网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</p>
   <div class="btn-bar">
     <label class="filler-field">填表人：
-      <input id="fillerName" type="text" placeholder="——" maxlength="20" />
+      <input id="fillerName" type="text" placeholder=" " maxlength="20" />
     </label>
     <button class="btn btn-csv" onclick="exportCSV()">导出CSV</button>
     <button class="btn btn-png" onclick="exportPNG()">导出图片</button>
@@ -698,6 +688,7 @@ function buildTable() {
   }
   applyColHideContentToDom();
   refreshAllSourceStyles();
+  scheduleAutoFit('tournamentTable', colHideContent);
 }
 
 function refreshSourceStyle(key) {
@@ -764,6 +755,7 @@ function updateCellDom(key) {
       td.classList.add('empty');
     }
   });
+  scheduleAutoFit('tournamentTable', colHideContent);
 }
 
 let _justFinishedEdit = 0;
@@ -801,9 +793,9 @@ function handleCellClick(e) {
     refreshSourceStyle(key);
     refreshAllSourceStyles();
     
-    renderDlcTable();
     selectedDlcIdx = null;
     clearDlcColHighlight();
+    renderDlcTable();
     return;
   }
   
@@ -878,6 +870,7 @@ function handleCellDblClick(e) {
     
     updateCellDom(key);
     applyColHideContentToDom();
+    scheduleAutoFit('tournamentTable', colHideContent);
     
     if (changed) {
       detachFromSource(key);
@@ -918,6 +911,7 @@ function handleHeaderDblClick(e) {
   if (isNaN(col)) return;
   colHideContent[col] = !colHideContent[col];
   applyColHideContentToDom();
+  scheduleAutoFit('tournamentTable', colHideContent);
 }
 
 function exportCSV() {
@@ -1065,6 +1059,8 @@ function resetTable() {
   buildTable();
   renderDlcTable();
   clearDlcColHighlight();
+  scheduleAutoFit('tournamentTable', colHideContent);
+  scheduleAutoFit('dlcTable', null);
   document.getElementById('fillerName').value = '';
 }
 
@@ -1184,6 +1180,125 @@ function renderDlcTable() {
     }
     tbody.appendChild(tr);
   }
+  scheduleAutoFit('dlcTable', null);
+}
+
+function measureCellTextWidth(cell, titleOnly) {
+  const clone = cell.cloneNode(true);
+  const titleEl = clone.querySelector('.poem-title');
+  const contentEl = clone.querySelector('.poem-content');
+  if (titleOnly) {
+    if (contentEl) contentEl.style.display = 'none';
+  }
+  clone.style.position = 'absolute';
+  clone.style.visibility = 'hidden';
+  clone.style.left = '-99999px';
+  clone.style.top = '-99999px';
+  clone.style.width = 'auto';
+  clone.style.minWidth = '0';
+  clone.style.maxWidth = 'none';
+  clone.style.whiteSpace = 'nowrap';
+  clone.style.padding = getComputedStyle(cell).padding;
+  clone.style.border = getComputedStyle(cell).border;
+  clone.style.boxSizing = 'border-box';
+  clone.style.font = getComputedStyle(cell).font;
+  clone.style.fontSize = getComputedStyle(cell).fontSize;
+  clone.style.lineHeight = getComputedStyle(cell).lineHeight;
+  if (titleEl) {
+    titleEl.style.display = '';
+    titleEl.style.whiteSpace = 'nowrap';
+  }
+  if (!titleOnly && contentEl) {
+    contentEl.style.display = '';
+    contentEl.style.whiteSpace = 'nowrap';
+  }
+  document.body.appendChild(clone);
+  const w = clone.offsetWidth;
+  document.body.removeChild(clone);
+  return w;
+}
+
+function autoFitColumnWidths(tableId, hideContentArr) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const headerRow = table.querySelector('thead tr');
+  const allRows = table.querySelectorAll('tbody tr');
+  if (!headerRow || allRows.length === 0) return;
+
+  const thCells = headerRow.children;
+  const colCount = thCells.length;
+  const maxWidths = new Array(colCount).fill(0);
+
+  for (let c = 0; c < colCount; c++) {
+    const th = thCells[c];
+    if (th) {
+      const w = measureCellTextWidth(th, false);
+      if (w > maxWidths[c]) maxWidths[c] = w;
+    }
+  }
+
+  for (let r = 0; r < allRows.length; r++) {
+    const tr = allRows[r];
+    const tds = tr.children;
+    for (let c = 0; c < tds.length; c++) {
+      const td = tds[c];
+      if (!td || td.innerHTML.trim() === '' || td.innerHTML === '&nbsp;') continue;
+      let colIdx = c;
+      const colAttr = td.getAttribute('data-col');
+      if (colAttr !== null) {
+        colIdx = parseInt(colAttr);
+        if (isNaN(colIdx)) colIdx = c;
+      }
+      const titleOnly = hideContentArr && hideContentArr[colIdx] === true;
+      const w = measureCellTextWidth(td, titleOnly);
+      if (w > maxWidths[colIdx]) maxWidths[colIdx] = w;
+    }
+  }
+
+  const MIN_W_DEFAULT = 140;
+  for (let c = 0; c < colCount; c++) {
+    if (maxWidths[c] < MIN_W_DEFAULT) maxWidths[c] = MIN_W_DEFAULT;
+    maxWidths[c] = Math.ceil(maxWidths[c]) + 4;
+  }
+
+  for (let c = 0; c < colCount; c++) {
+    if (thCells[c]) {
+      thCells[c].style.width = maxWidths[c] + 'px';
+      thCells[c].style.minWidth = maxWidths[c] + 'px';
+      thCells[c].style.maxWidth = maxWidths[c] + 'px';
+    }
+  }
+
+  for (let r = 0; r < allRows.length; r++) {
+    const tr = allRows[r];
+    const tds = tr.children;
+    let curCol = 0;
+    for (let i = 0; i < tds.length; i++) {
+      const td = tds[i];
+      const rs = parseInt(td.getAttribute('rowspan')) || 1;
+      if (rs > 1) {
+        let colIdx = curCol;
+        const colAttr = td.getAttribute('data-col');
+        if (colAttr !== null) colIdx = parseInt(colAttr);
+        const w = (colIdx >= 0 && colIdx < maxWidths.length) ? maxWidths[colIdx] : maxWidths[Math.min(curCol, maxWidths.length - 1)];
+        td.style.width = w + 'px';
+        td.style.minWidth = w + 'px';
+        td.style.maxWidth = w + 'px';
+      } else {
+        const w = maxWidths[Math.min(curCol, maxWidths.length - 1)];
+        td.style.width = w + 'px';
+        td.style.minWidth = w + 'px';
+        td.style.maxWidth = w + 'px';
+      }
+      curCol += rs;
+    }
+  }
+}
+
+function scheduleAutoFit(tableId, hideContentArr) {
+  requestAnimationFrame(() => {
+    setTimeout(() => autoFitColumnWidths(tableId, hideContentArr), 0);
+  });
 }
 
 function clearDlcColHighlight() {
@@ -1194,12 +1309,17 @@ function clearDlcColHighlight() {
 
 function selectDlc(idx) {
   if (idx < 0 || idx >= dlcData.length) return;
+  const prevIdx = selectedDlcIdx;
   selectedDlcIdx = (selectedDlcIdx === idx) ? null : idx;
   
-  clearDlcColHighlight();
-  if (selectedDlcIdx !== null) {
-    document.querySelectorAll('#tournamentTable td.col-0').forEach(td => {
-      td.classList.add('dlc-selected-col');
+  if (prevIdx !== null && selectedDlcIdx === null) {
+    clearDlcColHighlight();
+  } else if (selectedDlcIdx !== null) {
+    const col0Tds = document.querySelectorAll('#tournamentTable td.col-0');
+    col0Tds.forEach(td => {
+      if (!td.classList.contains('dlc-selected-col')) {
+        td.classList.add('dlc-selected-col');
+      }
     });
   }
   
