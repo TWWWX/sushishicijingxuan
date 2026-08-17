@@ -21,26 +21,24 @@
     <div v-if="!mode" class="author-note">作者的话：……</div>
 
     <template v-else>
-      <div class="zoomable-wrapper" :style="{ transform: `scale(${zoom})`, transformOrigin: 'top left', width: `${100 / zoom}%` }">
-        <TournamentTable
-          :key="'t-' + mode"
-          :cell-data="currentState.cellData"
-          :fill-target-map="currentState.fillTargetMap"
-          :col-hide-content="currentState.colHideContent"
-          :column-config="meta.columnConfig"
-          :header-labels="meta.headerLabels"
-          :total-rows="totalRows"
-          @header-dblclick="handleHeaderDblClick"
-          @cell-click="handleCellClick"
-          @cell-edit="handleCellEdit"
-        />
-        <DlcPanel
-          :key="'d-' + mode"
-          :dlc-data="currentState.dlcData"
-          :selected-dlc-idx="currentState.selectedDlcIdx"
-          @dlc-select="handleDlcSelect"
-        />
-      </div>
+      <TournamentTable
+        :key="'t-' + mode"
+        :cell-data="currentState.cellData"
+        :fill-target-map="currentState.fillTargetMap"
+        :col-hide-content="currentState.colHideContent"
+        :column-config="meta.columnConfig"
+        :header-labels="meta.headerLabels"
+        :total-rows="totalRows"
+        @header-dblclick="handleHeaderDblClick"
+        @cell-click="handleCellClick"
+        @cell-edit="handleCellEdit"
+      />
+      <DlcPanel
+        :key="'d-' + mode"
+        :dlc-data="currentState.dlcData"
+        :selected-dlc-idx="currentState.selectedDlcIdx"
+        @dlc-select="handleDlcSelect"
+      />
     </template>
 
     <LoadingMask :visible="loadingVisible" :text="loadingText" />
@@ -135,7 +133,25 @@ export default {
       return '苏轼诗文作品n选1';
     }
   },
+  watch: {
+    zoom: {
+      immediate: true,
+      handler(v) {
+        this.$nextTick(() => this.applyZoom(v));
+      }
+    },
+    mode() {
+      this.$nextTick(() => this.applyZoom(this.zoom));
+    }
+  },
   methods: {
+    applyZoom(z) {
+      const v = (typeof z === 'number' && z > 0) ? z : 1;
+      const t1 = document.getElementById('tournamentTable');
+      if (t1) t1.style.zoom = v;
+      const t2 = document.getElementById('dlcTable');
+      if (t2) t2.style.zoom = v;
+    },
     zoomIn() { this.zoom = Math.min(2, Math.round((this.zoom + 0.1) * 10) / 10); },
     zoomOut() { this.zoom = Math.max(0.4, Math.round((this.zoom - 0.1) * 10) / 10); },
     zoomReset() { this.zoom = 1; },

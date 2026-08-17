@@ -3,7 +3,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Songti SC", serif;
   background: #eef3ed;
-  padding: 20px;
+  padding: 4px;
   min-height: 100vh;
   color: #2c3e2c;
 }
@@ -19,7 +19,7 @@ body {
   font-weight: 700;
   letter-spacing: 4px;
   border-bottom: 1px solid #b8cdb8;
-  padding-bottom: 6px;
+  padding-bottom: 4px;
 }
 .hint {
   text-align: center;
@@ -32,18 +32,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .btn-mode {
-  padding: 6px 18px;
+  padding: 5px 12px;
   border: 1px solid #7aa380;
   border-radius: 2px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   background: #ddeee0;
   color: #3e6b45;
   transition: all 0.2s;
@@ -61,10 +61,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   flex-wrap: wrap;
-  margin-bottom: 6px;
-  padding: 6px;
+  margin-bottom: 4px;
+  padding: 4px;
   background: #f5f8f4;
   border: 1px solid #cfdccd;
   border-radius: 2px;
@@ -110,24 +110,24 @@ body {
   background: #fff;
   border: 1px dashed #b8cdb8;
   border-radius: 2px;
-  padding: 36px 20px;
-  min-height: 40vh;
+  padding: 20px 10px;
+  min-height: 30vh;
   text-align: center;
   color: #4a7a52;
   font-size: 16px;
-  letter-spacing: 2px;
-  line-height: 2;
+  letter-spacing: 1px;
+  line-height: 1.8;
   white-space: pre-wrap;
 }
 
 .table-wrapper {
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 80vh;
+  max-height: 70vh;
   background: #fff;
   border: 1px solid #cfdccd;
   border-radius: 2px;
-  padding: 2px;
+  padding: 1px;
 }
 table {
   border-collapse: separate;
@@ -155,7 +155,7 @@ th {
   position: sticky;
   top: 0;
   z-index: 10;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   cursor: pointer;
   user-select: none;
   word-wrap: break-word;
@@ -239,30 +239,30 @@ td[contenteditable="true"] {
 .champion-cell { background: #eaf3ed !important; border-color: #6a9d72 !important; }
 .champion-cell .poem-title { color: #3e6b45 !important; }
 
-.dlc-section { margin-top: 16px; }
+.dlc-section { margin-top: 10px; }
 .dlc-title {
   text-align: center;
   color: #4a7a52;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 3px;
-  margin-bottom: 8px;
-  padding-bottom: 6px;
+  margin-bottom: 4px;
+  padding-bottom: 3px;
   border-bottom: 1px solid #b8cdb8;
 }
 .dlc-hint {
   text-align: center;
   color: #6b866b;
   font-size: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 .dlc-wrapper {
   overflow-x: auto;
   background: #fff;
   border: 1px solid #cfdccd;
   border-radius: 2px;
-  padding: 2px;
-  max-height: 50vh;
+  padding: 1px;
+  max-height: 40vh;
   overflow-y: auto;
 }
 #dlcTable {

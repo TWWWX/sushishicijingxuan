@@ -121,6 +121,7 @@ export async function exportPNG(options) {
     exportContainer.appendChild(subDiv);
 
     const mainClone = document.getElementById('tournamentTable').cloneNode(true);
+    mainClone.style.zoom = '1';
     mainClone.querySelectorAll('th').forEach(th => { th.style.position = 'static'; });
     mainClone.querySelectorAll('th').forEach(th => { th.style.borderRadius = '0'; });
     exportContainer.appendChild(mainClone);
