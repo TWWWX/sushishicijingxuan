@@ -293,7 +293,7 @@ td[contenteditable="true"] {
   <table id="tournamentTable">
     <thead>
       <tr>
-        <th class="col-0">64句苏轼诗文</th>
+        <th class="col-0">64篇苏轼诗文</th>
         <th>前32</th>
         <th>前16</th>
         <th>前8</th>
@@ -684,7 +684,7 @@ function handleCellDblClick(e) {
 
 function exportCSV() {
   const rows = [];
-  const header = ['64句苏轼诗文', '32强', '16强', '8强', '4强', '2强', '冠军'];
+  const header = ['64篇苏轼诗文', '32强', '16强', '8强', '4强', '2强', '冠军'];
   rows.push(header);
   
   for (let r = 0; r < 64; r++) {
@@ -812,7 +812,7 @@ async function exportPNG() {
 }
 
 function resetTable() {
-  if (!confirm('确定要清空表格并恢复初始状态吗？第一列的64首诗文将恢复原文，其他列将全部清空。')) return;
+  if (!confirm('确定要清空表格并恢复初始状态吗？第一列的64篇诗文将恢复原文，其他列将全部清空。')) return;
   
   Object.keys(cellData).forEach(key => delete cellData[key]);
   Object.keys(fillSourceMap).forEach(k => delete fillSourceMap[k]);
