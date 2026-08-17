@@ -1,4 +1,66 @@
-export const poemsData = [
+export const MODES = {
+  M64: '64',
+  M256: '256'
+};
+
+export const MODE_META = {
+  [MODES.M64]: {
+    name: '64选1',
+    n: 64,
+    title: '苏轼诗文作品64选1',
+    dataFile: '苏轼诗词精选64版1.txt',
+    dlcFile: '苏轼诗词精选64选1dlc.txt',
+    firstColLabel: '64篇苏轼诗文',
+    columnConfig: [
+      { count: 64, rowSpan: 1 },
+      { count: 32, rowSpan: 2 },
+      { count: 16, rowSpan: 4 },
+      { count: 8,  rowSpan: 8 },
+      { count: 4,  rowSpan: 16 },
+      { count: 2,  rowSpan: 32 },
+      { count: 1,  rowSpan: 64 }
+    ],
+    headerLabels: [
+      '64篇苏轼诗文',
+      '前32',
+      '前16',
+      '前8',
+      '前4',
+      '前2',
+      '冠军'
+    ]
+  },
+  [MODES.M256]: {
+    name: '256选1',
+    n: 256,
+    title: '苏轼诗文作品256选1',
+    dataFile: '苏轼诗词精选256选1.txt',
+    dlcFile: '苏轼诗词精选256选1dlc.txt',
+    firstColLabel: '256篇苏轼诗文',
+    columnConfig: [
+      { count: 256, rowSpan: 1 },
+      { count: 64,  rowSpan: 4 },
+      { count: 16,  rowSpan: 4 },
+      { count: 8,   rowSpan: 2 },
+      { count: 4,   rowSpan: 2 },
+      { count: 2,   rowSpan: 2 },
+      { count: 1,   rowSpan: 2 }
+    ],
+    headerLabels: [
+      '256篇苏轼诗文',
+      '前64',
+      '前16',
+      '前8',
+      '前4',
+      '前2',
+      '冠军'
+    ]
+  }
+};
+
+export const DLC_COLS = 6;
+
+export const poemsData64 = [
   {title:"《赤壁赋》", content:"寄蜉蝣于天地，渺浮海之一粟"},
   {title:"《点绛唇·闲倚胡床》", content:"与谁同坐，明月清风我"},
   {title:"《定风波·莫听穿林打叶声》", content:"竹杖芒鞋轻胜马，谁怕，一蓑烟雨任平生"},
@@ -65,33 +127,7 @@ export const poemsData = [
   {title:"《纵笔》", content:"报道先生春睡美，道人轻打五更钟"}
 ];
 
-export const columnConfig = [
-  { count: 64, rowSpan: 1 },
-  { count: 32, rowSpan: 2 },
-  { count: 16, rowSpan: 4 },
-  { count: 8,  rowSpan: 8 },
-  { count: 4,  rowSpan: 16 },
-  { count: 2,  rowSpan: 32 },
-  { count: 1,  rowSpan: 64 }
-];
-
-export const DLC_COLS = 6;
-
-export const headerLabels = [
-  '64篇苏轼诗文',
-  '前32',
-  '前16',
-  '前8',
-  '前4',
-  '前2',
-  '冠军'
-];
-
-export function getCellKey(col, rowInCol) {
-  return `${col}_${rowInCol}`;
-}
-
-export const defaultDlcFallback = [
+export const defaultDlcFallback64 = [
   {title:"《八声甘州·寄参寥子》", content:"西州路，不应回首，为我沾衣"},
   {title:"《八月七日初入赣过惶恐滩》", content:"七千里外二毛人，十八滩头一叶身"},
   {title:"《薄薄酒》", content:"薄薄酒，胜茶汤；粗粗布，胜无裳"},
@@ -109,3 +145,51 @@ export const defaultDlcFallback = [
   {title:"《赤壁赋》", content:"寄蜉蝣于天地，渺浮海之一粟"},
   {title:"《出局偶书》", content:"倾杯不能饮，待得卯君来"}
 ];
+
+export const DEFAULT_POEMS_BY_MODE = {
+  [MODES.M64]: poemsData64
+};
+
+export const DEFAULT_DLC_BY_MODE = {
+  [MODES.M64]: defaultDlcFallback64
+};
+
+export function getCellKey(col, rowInCol) {
+  return `${col}_${rowInCol}`;
+}
+
+export function totalRowsForMode(mode) {
+  const cfg = MODE_META[mode]?.columnConfig;
+  if (!cfg || cfg.length === 0) return 0;
+  let total = 0;
+  for (let i = 0; i < cfg.length; i++) {
+    const rs = cfg[i].rowSpan;
+    if (rs === 1) { total = cfg[i].count; break; }
+  }
+  if (total === 0) total = cfg[0].count;
+  return total;
+}
+
+export function defaultPoemsByMode(mode) {
+  return DEFAULT_POEMS_BY_MODE[mode] || [];
+}
+
+export function defaultDlcByMode(mode) {
+  return DEFAULT_DLC_BY_MODE[mode] || [];
+}
+
+export function buildInitialCellData(mode) {
+  const cellData = {};
+  const cfg = MODE_META[mode];
+  if (!cfg) return cellData;
+  const firstColCount = cfg.columnConfig[0].count;
+  const poems = defaultPoemsByMode(mode);
+  for (let i = 0; i < firstColCount; i++) {
+    const key = getCellKey(0, i);
+    const poem = poems[i];
+    if (poem) {
+      cellData[key] = { title: poem.title, content: poem.content };
+    }
+  }
+  return cellData;
+}

@@ -1,5 +1,5 @@
 import html2canvas from 'html2canvas';
-import { columnConfig, headerLabels, getCellKey } from '../data/poems';
+import { getCellKey } from '../data/poems';
 
 export function formatDate() {
   const d = new Date();
@@ -10,19 +10,25 @@ export function formatDate() {
     String(d.getMinutes()).padStart(2, '0');
 }
 
-export function exportCSV(cellDataRef) {
+export function exportCSV(options) {
+  const { cellData, columnConfig, headerLabels, totalRows, title } = options || {};
   const rows = [];
-  const header = [...headerLabels];
-  rows.push(header);
-  for (let r = 0; r < 64; r++) {
+  const colCount = headerLabels.length;
+  if (title) {
+    const titleRow = [title];
+    for (let i = 1; i < colCount; i++) titleRow.push('');
+    rows.push(titleRow);
+  }
+  rows.push([...headerLabels]);
+  for (let r = 0; r < totalRows; r++) {
     const row = [];
-    for (let c = 0; c < 7; c++) {
+    for (let c = 0; c < colCount; c++) {
       const cfg = columnConfig[c];
       const rowInCol = Math.floor(r / cfg.rowSpan);
       const key = getCellKey(c, rowInCol);
       const isFirst = (r % cfg.rowSpan) === 0;
-      if (isFirst && cellDataRef[key] !== undefined) {
-        const data = cellDataRef[key];
+      if (isFirst && cellData[key] !== undefined) {
+        const data = cellData[key];
         if (typeof data === 'string') {
           row.push(data.replace(/\n/g, ' '));
         } else {
@@ -47,12 +53,13 @@ export function exportCSV(cellDataRef) {
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = '苏轼诗文作品64选1_' + formatDate() + '.csv';
+  link.download = (title || '苏轼诗文作品') + '_' + formatDate() + '.csv';
   link.click();
   URL.revokeObjectURL(link.href);
 }
 
-export async function exportPNG(fillerName, loadingCallbacks) {
+export async function exportPNG(options) {
+  const { fillerName, loadingCallbacks, title } = options || {};
   const { show, hide } = loadingCallbacks || {};
   if (show) show('正在生成长图，请稍候...');
   try {
@@ -66,7 +73,7 @@ export async function exportPNG(fillerName, loadingCallbacks) {
 
     const exportContainer = document.createElement('div');
     exportContainer.style.background = '#eef3ed';
-    exportContainer.style.padding = '20px';
+    exportContainer.style.padding = '16px';
     exportContainer.style.width = 'max-content';
 
     const titleDiv = document.createElement('div');
@@ -78,7 +85,7 @@ export async function exportPNG(fillerName, loadingCallbacks) {
     titleDiv.style.padding = '16px 10px 8px';
     titleDiv.style.borderBottom = '1px solid #b8cdb8';
     titleDiv.style.background = '#f5f8f4';
-    titleDiv.textContent = '苏轼诗文作品64选1';
+    titleDiv.textContent = title || '苏轼诗文作品';
     exportContainer.appendChild(titleDiv);
 
     const subDiv = document.createElement('div');
@@ -116,7 +123,7 @@ export async function exportPNG(fillerName, loadingCallbacks) {
     canvas.toBlob((blob) => {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = '苏轼诗文作品64选1_' + formatDate() + '.png';
+      link.download = (title || '苏轼诗文作品') + '_' + formatDate() + '.png';
       link.click();
       URL.revokeObjectURL(link.href);
       if (hide) hide();

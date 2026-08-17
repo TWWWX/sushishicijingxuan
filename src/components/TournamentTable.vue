@@ -13,8 +13,8 @@
         </tr>
       </thead>
       <tbody id="tableBody">
-        <tr v-for="row in 64" :key="'row-' + row">
-          <template v-for="col in 7" :key="'cell-' + (row - 1) + '-' + col">
+        <tr v-for="row in totalRows" :key="'row-' + row">
+          <template v-for="col in columnCount" :key="'cell-' + (row - 1) + '-' + col">
             <td
               v-if="isFirstRowOfCell(row - 1, col - 1)"
               :class="cellClasses(col - 1, row - 1)"
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { columnConfig, headerLabels, getCellKey } from '../data/poems';
+import { getCellKey } from '../data/poems';
 import { formatPoemCell } from '../utils/poem';
 import { scheduleAutoFit } from '../utils/columnWidth';
 
@@ -47,51 +47,48 @@ export default {
     cellData: { type: Object, required: true },
     fillTargetMap: { type: Object, required: true },
     colHideContent: { type: Array, required: true },
-    selectedDlcIdx: { type: Number, default: null }
+    columnConfig: { type: Array, required: true },
+    headerLabels: { type: Array, required: true },
+    totalRows: { type: Number, required: true }
   },
   data() {
     return {
-      columnConfig,
-      headerLabels,
       editingKeys: {},
-      justFinishedEdit: 0,
-      pendingKeydown: null
+      justFinishedEdit: 0
     };
+  },
+  computed: {
+    columnCount() { return this.columnConfig.length; }
   },
   methods: {
     cellKey(col, rowInCol) {
       return getCellKey(col, rowInCol);
     },
     firstRowIndex(row, col) {
-      return Math.floor(row / columnConfig[col].rowSpan);
+      return Math.floor(row / this.columnConfig[col].rowSpan);
     },
     isFirstRowOfCell(row, col) {
-      return (row % columnConfig[col].rowSpan) === 0;
+      return (row % this.columnConfig[col].rowSpan) === 0;
     },
     isEditing(key) {
       return !!this.editingKeys[key];
     },
     renderCellHtml(col, rowInCol) {
-      const key = getCellKey(col, rowInCol);
-      if (this.isEditing(key)) {
-        return '';
-      }
+      const key = this.cellKey(col, rowInCol);
+      if (this.isEditing(key)) return '';
       const data = this.cellData[key];
       if (data === undefined) return '&nbsp;';
       return formatPoemCell(data);
     },
     cellClasses(col, row) {
-      const key = getCellKey(col, this.firstRowIndex(row, col));
+      const key = this.cellKey(col, this.firstRowIndex(row, col));
       const cls = [];
       if (col === 0) cls.push('col-0');
       if (col === 1) cls.push('col-1');
-      if (col === 6) cls.push('champion-cell');
+      if (col === this.columnCount - 1) cls.push('champion-cell');
       if (this.cellData[key] === undefined && !this.isEditing(key)) cls.push('empty');
       if (this.fillTargetMap[key] && Object.keys(this.fillTargetMap[key]).length > 0) {
         cls.push('source-cell');
-      }
-      if (col === 0 && this.selectedDlcIdx !== null) {
-        cls.push('dlc-selected-col');
       }
       if (this.colHideContent[col]) {
         cls.push('hide-poem-content');
@@ -117,7 +114,7 @@ export default {
           if (typeof cur === 'string') {
             td.textContent = cur;
           } else {
-            td.textContent = cur.title + '\n' + cur.content;
+            td.textContent = cur.title + '\n' + (cur.content || '');
           }
         } else {
           td.textContent = '';
