@@ -111,7 +111,7 @@ body {
   background: #fff;
   border: 1px solid #cfdccd;
   border-radius: 2px;
-  padding: 1px;
+  padding: 2px;
 }
 table {
   border-collapse: separate;
@@ -122,7 +122,7 @@ table {
 th {
   background: #6a9d72;
   color: #f8faf7;
-  padding: 2px 2px;
+  padding: 5px 6px;
   text-align: center;
   font-weight: 600;
   font-size: 13px;
@@ -137,15 +137,15 @@ th {
   user-select: none;
 }
 th.col-0 {
-  padding: 2px 3px;
-  font-size: 11px;
+  padding: 5px 8px;
+  font-size: 12px;
   min-width: 320px;
   max-width: none;
   width: 320px;
 }
 th.col-1 {
-  padding: 2px 2px;
-  font-size: 12px;
+  padding: 5px 6px;
+  font-size: 13px;
   min-width: 190px;
   max-width: 260px;
 }
@@ -163,11 +163,11 @@ th:first-child { border-radius: 2px 0 0 0; }
 th:last-child { border-radius: 0 2px 0 0; }
 td {
   border: 1px solid #dde7dd;
-  padding: 1px 2px;
+  padding: 4px 4px;
   text-align: center;
   vertical-align: middle;
-  font-size: 12px;
-  line-height: 1.25;
+  font-size: 13px;
+  line-height: 1.35;
   min-width: 200px;
   max-width: 280px;
   word-wrap: break-word;
@@ -178,9 +178,9 @@ td {
   position: relative;
 }
 td.col-0 {
-  padding: 1px 3px;
-  font-size: 10px;
-  line-height: 1.25;
+  padding: 3px 8px;
+  font-size: 11px;
+  line-height: 1.35;
   min-width: 320px;
   max-width: none;
   width: 320px;
@@ -190,29 +190,29 @@ td.col-0.source-cell {
   background: #e3f1e5;
 }
 td.col-0 .poem-title {
-  font-size: 11px;
-  margin-bottom: 1px;
+  font-size: 12px;
+  margin-bottom: 2px;
 }
 td.col-0 .poem-content {
-  font-size: 10px;
+  font-size: 11px;
 }
 td.col-1 {
-  padding: 1px 2px;
-  font-size: 11px;
-  line-height: 1.25;
+  padding: 3px 5px;
+  font-size: 12px;
+  line-height: 1.35;
   min-width: 190px;
   max-width: 260px;
 }
 td.col-1 .poem-title {
-  font-size: 12px;
-  margin-bottom: 1px;
+  font-size: 13px;
+  margin-bottom: 2px;
 }
 td.col-1 .poem-content {
-  font-size: 10.5px;
+  font-size: 11px;
 }
 td.dlc-selected-col {
-  outline: 2px dashed #c28a3b;
-  outline-offset: -2px;
+  outline: 1px solid #6a9d72;
+  outline-offset: -1px;
 }
 tr.hide-poem-content td .poem-content,
 table.hide-poem-content td .poem-content { display: none; }
@@ -244,15 +244,15 @@ td[contenteditable="true"] {
 .poem-title {
   font-weight: 600;
   color: #4a7a52;
-  margin-bottom: 1px;
+  margin-bottom: 3px;
   display: block;
-  font-size: 13px;
-  line-height: 1.2;
+  font-size: 14px;
+  line-height: 1.3;
 }
 .poem-content {
   color: #4e5b4e;
-  font-size: 11.5px;
-  line-height: 1.25;
+  font-size: 12px;
+  line-height: 1.35;
   display: block;
 }
 .export-header-row th {
@@ -268,7 +268,7 @@ td[contenteditable="true"] {
   color: #3e6b45 !important;
 }
 .dlc-section {
-  margin-top: 14px;
+  margin-top: 20px;
 }
 .dlc-title {
   text-align: center;
@@ -276,22 +276,22 @@ td[contenteditable="true"] {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 3px;
-  margin-bottom: 6px;
-  padding-bottom: 4px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
   border-bottom: 1px solid #b8cdb8;
 }
 .dlc-hint {
   text-align: center;
   color: #6b866b;
   font-size: 12px;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 .dlc-wrapper {
   overflow-x: auto;
   background: #fff;
   border: 1px solid #cfdccd;
   border-radius: 2px;
-  padding: 1px;
+  padding: 4px;
   max-height: 50vh;
   overflow-y: auto;
 }
@@ -303,8 +303,8 @@ td[contenteditable="true"] {
 #dlcTable th {
   background: #7a8f9b;
   color: #f8faf7;
-  padding: 2px 2px;
-  font-size: 11px;
+  padding: 5px 6px;
+  font-size: 12px;
   text-align: center;
   border: 1px solid #637782;
   letter-spacing: 1px;
@@ -314,11 +314,11 @@ td[contenteditable="true"] {
 }
 #dlcTable td {
   border: 1px solid #dde3e7;
-  padding: 1px 3px;
+  padding: 3px 6px;
   vertical-align: middle;
   text-align: center;
-  font-size: 10px;
-  line-height: 1.25;
+  font-size: 11px;
+  line-height: 1.35;
   background: #fcfdfb;
   cursor: pointer;
   min-width: 220px;
@@ -326,20 +326,20 @@ td[contenteditable="true"] {
   transition: all 0.15s;
 }
 #dlcTable td.selected {
-  background: #f6ead1;
-  border-color: #c28a3b;
-  box-shadow: inset 0 0 0 2px #e0b46a;
+  background: #e3f1e5;
+  border-color: #6a9d72;
+  box-shadow: inset 0 0 0 1px #6a9d72;
 }
 #dlcTable td:hover {
-  background: #f2ede2;
-  border-color: #a98955;
+  background: #eef6ef;
+  border-color: #6a9d72;
 }
 #dlcTable td .poem-title {
-  font-size: 11px;
-  margin-bottom: 1px;
+  font-size: 12px;
+  margin-bottom: 2px;
 }
 #dlcTable td .poem-content {
-  font-size: 10px;
+  font-size: 11px;
 }
 .loading-mask {
   position: fixed;
@@ -803,6 +803,7 @@ function handleCellClick(e) {
     
     renderDlcTable();
     selectedDlcIdx = null;
+    clearDlcColHighlight();
     return;
   }
   
@@ -970,21 +971,13 @@ async function exportPNG() {
   
   try {
     const tableWrapper = document.getElementById('tableWrapper');
-    const dlcWrapper = document.querySelector('.dlc-wrapper');
-    const dlcSection = document.querySelector('.dlc-section');
     const fillerName = (document.getElementById('fillerName').value || '').trim() || '——';
     
     const prevOverflow = tableWrapper.style.overflow;
     const prevMaxHeight = tableWrapper.style.maxHeight;
-    const prevDlcOverflow = dlcWrapper ? dlcWrapper.style.overflow : '';
-    const prevDlcMaxHeight = dlcWrapper ? dlcWrapper.style.maxHeight : '';
     
     tableWrapper.style.overflow = 'visible';
     tableWrapper.style.maxHeight = 'none';
-    if (dlcWrapper) {
-      dlcWrapper.style.overflow = 'visible';
-      dlcWrapper.style.maxHeight = 'none';
-    }
     
     await new Promise(r => setTimeout(r, 100));
     
@@ -1018,14 +1011,8 @@ async function exportPNG() {
     
     const mainClone = document.getElementById('tournamentTable').cloneNode(true);
     mainClone.querySelectorAll('th').forEach(th => { th.style.position = 'static'; });
-    const mainThs = mainClone.querySelectorAll('th');
-    mainThs.forEach(th => { th.style.borderRadius = '0'; });
+    mainClone.querySelectorAll('th').forEach(th => { th.style.borderRadius = '0'; });
     exportContainer.appendChild(mainClone);
-    
-    if (dlcSection) {
-      const dlcClone = dlcSection.cloneNode(true);
-      exportContainer.appendChild(dlcClone);
-    }
     
     document.body.appendChild(exportContainer);
     await new Promise(r => setTimeout(r, 50));
@@ -1043,10 +1030,6 @@ async function exportPNG() {
     
     tableWrapper.style.overflow = prevOverflow;
     tableWrapper.style.maxHeight = prevMaxHeight;
-    if (dlcWrapper) {
-      dlcWrapper.style.overflow = prevDlcOverflow;
-      dlcWrapper.style.maxHeight = prevDlcMaxHeight;
-    }
     
     canvas.toBlob((blob) => {
       const link = document.createElement('a');
@@ -1081,6 +1064,7 @@ function resetTable() {
   
   buildTable();
   renderDlcTable();
+  clearDlcColHighlight();
   document.getElementById('fillerName').value = '';
 }
 
@@ -1202,12 +1186,17 @@ function renderDlcTable() {
   }
 }
 
+function clearDlcColHighlight() {
+  document.querySelectorAll('#tournamentTable td.col-0.dlc-selected-col').forEach(td => {
+    td.classList.remove('dlc-selected-col');
+  });
+}
+
 function selectDlc(idx) {
   if (idx < 0 || idx >= dlcData.length) return;
   selectedDlcIdx = (selectedDlcIdx === idx) ? null : idx;
   
-  const oldHighlight = document.querySelector('#tournamentTable td.dlc-selected-col');
-  if (oldHighlight) oldHighlight.classList.remove('dlc-selected-col');
+  clearDlcColHighlight();
   if (selectedDlcIdx !== null) {
     document.querySelectorAll('#tournamentTable td.col-0').forEach(td => {
       td.classList.add('dlc-selected-col');
