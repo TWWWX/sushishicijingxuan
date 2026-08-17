@@ -132,7 +132,7 @@ body {
 table {
   border-collapse: separate;
   border-spacing: 0;
-  min-width: 100%;
+  min-width: 0;
   width: max-content;
   table-layout: fixed;
 }
@@ -267,7 +267,7 @@ td[contenteditable="true"] {
 }
 #dlcTable {
   width: max-content;
-  min-width: 100%;
+  min-width: 0;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;

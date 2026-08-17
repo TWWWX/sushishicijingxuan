@@ -44,27 +44,21 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
   const thCells = headerRow.children;
   const colCount = thCells.length;
   const maxWidths = new Array(colCount).fill(0);
-
-  for (let c = 0; c < colCount; c++) {
-    const th = thCells[c];
-    if (th) {
-      const w = measureCellTextWidth(th, false);
-      if (w > maxWidths[c]) maxWidths[c] = w;
-    }
-  }
+  const hasTdContent = new Array(colCount).fill(false);
 
   for (let r = 0; r < allRows.length; r++) {
     const tr = allRows[r];
     const tds = tr.children;
     for (let c = 0; c < tds.length; c++) {
       const td = tds[c];
-      if (!td || td.innerHTML.trim() === '' || td.innerHTML === '&nbsp;') continue;
       let colIdx = c;
       const colAttr = td.getAttribute('data-col');
       if (colAttr !== null) {
         colIdx = parseInt(colAttr);
         if (isNaN(colIdx)) colIdx = c;
       }
+      if (!td || td.innerHTML.trim() === '' || td.innerHTML === '&nbsp;') continue;
+      if (colIdx >= 0 && colIdx < colCount) hasTdContent[colIdx] = true;
       const titleOnly = hideContentArr && hideContentArr[colIdx] === true;
       const w = measureCellTextWidth(td, titleOnly);
       if (w > maxWidths[colIdx]) maxWidths[colIdx] = w;
@@ -72,6 +66,15 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
   }
 
   for (let c = 0; c < colCount; c++) {
+    if (!hasTdContent[c]) {
+      maxWidths[c] = 40;
+      continue;
+    }
+    const th = thCells[c];
+    if (th) {
+      const w = measureCellTextWidth(th, false);
+      if (w > maxWidths[c]) maxWidths[c] = w;
+    }
     maxWidths[c] = Math.ceil(maxWidths[c]) + 2;
   }
 
