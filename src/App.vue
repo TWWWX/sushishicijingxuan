@@ -2,8 +2,7 @@
   <div id="app-root">
     <div class="header">
       <h1 class="page-title">{{ pageTitle }}</h1>
-      <p class="hint">单击单元格 &rarr; 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 &rarr; 编辑内容，第一列也可修改 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 &harr; 隐藏/显示该列诗文内容</p>
-      <p class="hint">网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</p>
+      <p class="hint">单击单元格 &rarr; 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 &rarr; 编辑内容 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 &harr; 隐藏/显示该列诗文内容</p>
       <ControlBar
         :current-mode="mode"
         :filler-name.sync="fillerName"
@@ -18,7 +17,7 @@
       />
     </div>
 
-    <div v-if="!mode" class="author-note">作者的话：……</div>
+    <div v-if="!mode" class="author-note">网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</div>
 
     <template v-else>
       <TournamentTable
@@ -109,7 +108,7 @@ export default {
       loadingText: '正在处理...',
       perMode: {
         [MODES.M64]: freshState(),
-        [MODES.M256]: freshState()
+        [MODES.M288]: freshState()
       }
     };
   },

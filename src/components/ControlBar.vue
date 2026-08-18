@@ -6,13 +6,13 @@
         :class="{ disabled: currentMode === null }"
         :disabled="currentMode === null"
         @click="$emit('switch-mode', null)"
-      >主页</button>
+      >东坡墙的话</button>
       <button
         class="btn-mode"
-        :class="{ disabled: currentMode === '256' }"
-        :disabled="currentMode === '256'"
-        @click="$emit('switch-mode', '256')"
-      >256选1表格</button>
+        :class="{ disabled: currentMode === '288' }"
+        :disabled="currentMode === '288'"
+        @click="$emit('switch-mode', '288')"
+      >288选1表格</button>
       <button
         class="btn-mode"
         :class="{ disabled: currentMode === '64' }"

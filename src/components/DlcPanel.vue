@@ -1,12 +1,12 @@
 <template>
   <div class="dlc-section">
-    <h2 class="dlc-title">DLC库</h2>
-    <p class="dlc-hint">（单击选中DLC条目，再点主表第一列任意格进行交换；支持内容联动同步）</p>
+    <h2 class="dlc-title">补充诗文库</h2>
+    <p class="dlc-hint">（单击选中补充诗文条目，再点主表第一列任意格进行交换；支持内容联动同步）</p>
     <div class="dlc-wrapper">
       <table id="dlcTable">
         <thead>
           <tr id="dlcHeaderRow">
-            <th v-for="c in dlcCols" :key="'dlc-th-' + c">DLC第{{ c }}列</th>
+            <th v-for="c in dlcCols" :key="'dlc-th-' + c">补充诗文第{{ c }}列</th>
           </tr>
         </thead>
         <tbody id="dlcBody">

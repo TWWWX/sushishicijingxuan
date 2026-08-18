@@ -3,7 +3,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Songti SC", serif;
   background: #eef3ed;
-  padding: 4px;
+  padding: 30px;
   min-height: 100vh;
   color: #2c3e2c;
 }
@@ -25,7 +25,7 @@ body {
   text-align: center;
   color: #6b866b;
   margin-bottom: 4px;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 .mode-bar {
@@ -112,6 +112,8 @@ body {
   border-radius: 2px;
   padding: 20px 10px;
   min-height: 30vh;
+  width: 100%;
+  box-sizing: border-box;
   text-align: center;
   color: #4a7a52;
   font-size: 16px;
@@ -163,9 +165,9 @@ th {
 }
 th.col-0 { padding: 1px 1px; font-size: 12px; }
 th.col-1 { padding: 1px 1px; font-size: 13px; }
-th.hide-col { background: #8fae93 !important; font-style: italic; }
+th.hide-col { background: #8fae93 !important; }
 th.hide-col::after {
-  content: '（藏内容）';
+  content: '（隐藏内容）';
   margin-left: 6px;
   font-size: 10px;
   opacity: 0.9;

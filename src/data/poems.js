@@ -1,6 +1,6 @@
 export const MODES = {
   M64: '64',
-  M256: '256'
+  M288: '288'
 };
 
 export const MODE_META = {
@@ -30,26 +30,26 @@ export const MODE_META = {
       '冠军'
     ]
   },
-  [MODES.M256]: {
-    name: '256选1',
-    n: 256,
-    title: '苏轼诗文作品256选1',
-    dataFile: '苏轼诗词精选256选1.txt',
-    dlcFile: '苏轼诗词精选256选1dlc.txt',
-    firstColLabel: '256篇苏轼诗文',
+  [MODES.M288]: {
+    name: '288选1',
+    n: 288,
+    title: '苏轼诗文作品288选1',
+    dataFile: '苏轼诗词精选288选1.txt',
+    dlcFile: '苏轼诗词精选288选1dlc.txt',
+    firstColLabel: '288篇苏轼诗文',
     columnConfig: [
-      { count: 256, rowSpan: 1 },
-      { count: 64,  rowSpan: 4 },
-      { count: 16,  rowSpan: 16 },
-      { count: 8,   rowSpan: 32 },
-      { count: 4,   rowSpan: 64 },
-      { count: 2,   rowSpan: 128 },
-      { count: 1,   rowSpan: 256 }
+      { count: 288, rowSpan: 1 },
+      { count: 72,  rowSpan: 4 },
+      { count: 24,  rowSpan: 12 },
+      { count: 8,   rowSpan: 36 },
+      { count: 4,   rowSpan: 72 },
+      { count: 2,   rowSpan: 144 },
+      { count: 1,   rowSpan: 288 }
     ],
     headerLabels: [
-      '256篇苏轼诗文',
-      '前64',
-      '前16',
+      '288篇苏轼诗文',
+      '前72',
+      '前24',
       '前8',
       '前4',
       '前2',
