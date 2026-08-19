@@ -226,33 +226,6 @@ body {
 .btn-png { background: #fff; color: #2c3e2c; }
 .btn-reset { background: #fff; color: #2c3e2c; }
 
-.upload-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.csv-file-input {
-  font-size: 11px;
-  color: #6b866b;
-  max-width: 120px;
-}
-.btn-upload {
-  background: #fff;
-  color: #2c3e2c;
-}
-.btn-upload:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.upload-msg {
-  width: 100%;
-  text-align: center;
-  font-size: 12px;
-  margin-top: 2px;
-}
-.upload-msg.success { color: #4a7a52; }
-.upload-msg.error { color: #a04040; }
-
 .zoom-bar {
   display: inline-flex;
   align-items: center;
@@ -533,8 +506,6 @@ td[contenteditable="true"] {
   .filler-input { width: 100%; }
   .toolbar-right { width: 100%; justify-content: space-between; }
   .btn { padding: 5px 8px; font-size: 11px; flex: 1; text-align: center; }
-  .upload-group { width: 100%; }
-  .csv-file-input { flex: 1; max-width: none; }
   .zoom-bar { flex: 1; justify-content: center; }
 
   th, td { font-size: 9px; padding: 1px 1px; line-height: 1.2; }

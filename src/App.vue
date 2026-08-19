@@ -59,11 +59,12 @@
       <ControlBar
         :filler-name.sync="fillerName"
         :zoom="zoom"
-        :mode="mode"
+        :uploading="uploading"
         @zoom-in="zoomIn"
         @zoom-out="zoomOut"
         @zoom-reset="zoomReset"
         @export-csv="handleExportCSV"
+        @upload-csv="handleUploadCSV"
         @export-png="handleExportPNG"
         @reset="handleReset"
       />
@@ -112,7 +113,7 @@ import {
   parseDlcText
 } from './utils/poem';
 import { scheduleAutoFit } from './utils/columnWidth';
-import { exportCSV as exportCSVUtil, exportPNG as exportPNGUtil } from './utils/export';
+import { exportCSV as exportCSVUtil, exportPNG as exportPNGUtil, uploadCSV as uploadCSVUtil } from './utils/export';
 
 function freshState() {
   return {
@@ -152,6 +153,7 @@ export default {
       fillerName: '',
       mode: null,
       zoom: 1,
+      uploading: false,
       loadingVisible: false,
       loadingText: '正在处理...',
       randomPoemContent: '',
@@ -372,6 +374,33 @@ export default {
         totalRows: this.totalRows,
         title: this.meta.title
       });
+    },
+    async handleUploadCSV() {
+      if (!this.mode) return;
+      if (this.uploading) return;
+      this.uploading = true;
+      try {
+        const folder = this.mode === '288' ? 'shiwen-288' : 'shiwen-64';
+        await uploadCSVUtil({
+          cellData: this.currentState.cellData,
+          columnConfig: this.meta.columnConfig,
+          headerLabels: this.meta.headerLabels,
+          totalRows: this.totalRows,
+          title: this.meta.title,
+          folder,
+          onStatus: (status, errMsg) => {
+            if (status === 'success') {
+              alert('上传成功');
+            } else if (status === 'error') {
+              alert('上传失败：' + (errMsg || '未知错误'));
+            }
+          }
+        });
+      } catch (err) {
+        alert('上传失败：' + (err.message || '未知错误'));
+      } finally {
+        this.uploading = false;
+      }
     },
     handleExportPNG() {
       if (!this.mode) return;

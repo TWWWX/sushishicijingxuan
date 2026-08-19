@@ -10,7 +10,7 @@ export function formatDate() {
     String(d.getMinutes()).padStart(2, '0');
 }
 
-export function exportCSV(options) {
+export function getCSVString(options) {
   const { cellData, columnConfig, headerLabels, totalRows, title } = options || {};
   const rows = [];
   const colCount = headerLabels.length;
@@ -40,7 +40,7 @@ export function exportCSV(options) {
     }
     rows.push(row);
   }
-  const csvContent = '\uFEFF' + rows.map(row =>
+  return '\uFEFF' + rows.map(row =>
     row.map(cell => {
       if (cell === null || cell === undefined) return '""';
       const s = String(cell);
@@ -50,12 +50,48 @@ export function exportCSV(options) {
       return s;
     }).join(',')
   ).join('\r\n');
+}
+
+export function exportCSV(options) {
+  const { title } = options || {};
+  const csvContent = getCSVString(options);
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = (title || '苏轼诗文作品') + '_' + formatDate() + '.csv';
   link.click();
   URL.revokeObjectURL(link.href);
+}
+
+export async function uploadCSV(options) {
+  const { cellData, columnConfig, headerLabels, totalRows, title, folder, onStatus } = options || {};
+  if (onStatus) onStatus('uploading');
+  try {
+    const csvContent = getCSVString({ cellData, columnConfig, headerLabels, totalRows, title });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const fileName = 'result.csv';
+    const apiUrl = `/api/upload?fileName=${encodeURIComponent(fileName)}&folder=${encodeURIComponent(folder)}`;
+    const resp = await fetch(apiUrl);
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`获取上传地址失败(${resp.status}): ${errText}`);
+    }
+    const { signedUrl, fileKey } = await resp.json();
+    if (!signedUrl) throw new Error('未获取到上传地址');
+    const putResp = await fetch(signedUrl, {
+      method: 'PUT',
+      body: blob,
+      headers: { 'Content-Type': 'text/csv;charset=utf-8' }
+    });
+    if (!putResp.ok) {
+      throw new Error(`上传失败(${putResp.status}): ${putResp.statusText}`);
+    }
+    if (onStatus) onStatus('success');
+    return { success: true, fileKey };
+  } catch (err) {
+    if (onStatus) onStatus('error', err.message);
+    throw err;
+  }
 }
 
 export async function exportPNG(options) {
