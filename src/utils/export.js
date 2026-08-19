@@ -72,19 +72,20 @@ export async function exportPNG(options) {
     await new Promise(r => setTimeout(r, 100));
 
     const exportContainer = document.createElement('div');
-    exportContainer.style.background = '#eef3ed';
+    exportContainer.style.background = '#f5f3ef';
     exportContainer.style.padding = '16px';
     exportContainer.style.width = 'max-content';
 
     const titleDiv = document.createElement('div');
     titleDiv.style.textAlign = 'center';
-    titleDiv.style.color = '#4a7a52';
+    titleDiv.style.color = '#2c3e2c';
     titleDiv.style.fontSize = '26px';
     titleDiv.style.fontWeight = '700';
     titleDiv.style.letterSpacing = '4px';
     titleDiv.style.padding = '16px 10px 8px';
     titleDiv.style.borderBottom = '1px solid #b8cdb8';
-    titleDiv.style.background = '#f5f8f4';
+    titleDiv.style.background = '#faf9f6';
+    titleDiv.style.fontFamily = '"Noto Serif SC", "Songti SC", "SimSun", "STSong", serif';
     titleDiv.textContent = title || '苏轼诗文作品';
     exportContainer.appendChild(titleDiv);
 
@@ -95,9 +96,10 @@ export async function exportPNG(options) {
     subDiv.style.color = '#6b866b';
     subDiv.style.padding = '6px 10px';
     subDiv.style.fontWeight = '400';
-    subDiv.style.background = '#f5f8f4';
-    subDiv.style.borderBottom = '1px solid #cfdccd';
+    subDiv.style.background = '#faf9f6';
+    subDiv.style.borderBottom = '1px solid #b8cdb8';
     subDiv.style.fontSize = '14px';
+    subDiv.style.fontFamily = '"Noto Serif SC", "Songti SC", "SimSun", "STSong", serif';
 
     const leftSpan = document.createElement('span');
     leftSpan.style.textAlign = 'left';

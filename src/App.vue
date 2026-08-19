@@ -1,13 +1,60 @@
 <template>
   <div id="app-root">
-    <div class="header">
-      <h1 class="page-title">{{ pageTitle }}</h1>
-      <p class="hint">单击单元格 &rarr; 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 &rarr; 编辑内容 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 &harr; 隐藏/显示该列诗文内容</p>
+    <!-- 主页 -->
+    <div v-if="!mode" class="homepage">
+      <div class="home-header">
+        <div class="home-title-row">
+          <span class="title-line"></span>
+          <h1 class="home-title">苏轼诗文作品 n 选 1</h1>
+          <span class="title-line"></span>
+        </div>
+        <p class="home-subtitle">— 东坡墙 —</p>
+      </div>
+
+      <div class="author-note-wrapper">
+        <div class="author-note-bar"></div>
+        <div class="author-note-box">网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</div>
+      </div>
+
+      <div class="entry-cards">
+        <div class="entry-card" @click="switchMode('288')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">苏轼诗文作品</div>
+            <div class="card-subtitle">288选1</div>
+          </div>
+        </div>
+        <div class="entry-card" @click="switchMode('64')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">苏轼诗文作品</div>
+            <div class="card-subtitle">64选1</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="random-poem">「{{ randomPoem }}」</div>
+    </div>
+
+    <!-- 表格页 -->
+    <div v-else class="table-page">
+      <div class="table-page-header">
+        <a class="back-link" @click="switchMode(null)">← 返回主页</a>
+        <div class="tabs">
+          <div class="tab" :class="{ active: mode === '288' }" @click="switchMode('288')">苏轼诗文作品288选1</div>
+          <div class="tab" :class="{ active: mode === '64' }" @click="switchMode('64')">苏轼诗文作品64选1</div>
+        </div>
+      </div>
+
+      <div class="table-title-row">
+        <div class="title-deco-bar"></div>
+        <h2 class="table-page-title">{{ meta.title }}</h2>
+        <p class="hint">单击单元格 → 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 → 编辑内容 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 ↔ 隐藏/显示该列诗文内容</p>
+      </div>
+
       <ControlBar
-        :current-mode="mode"
         :filler-name.sync="fillerName"
         :zoom="zoom"
-        @switch-mode="switchMode"
         @zoom-in="zoomIn"
         @zoom-out="zoomOut"
         @zoom-reset="zoomReset"
@@ -15,11 +62,7 @@
         @export-png="handleExportPNG"
         @reset="handleReset"
       />
-    </div>
 
-    <div v-if="!mode" class="author-note">网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</div>
-
-    <template v-else>
       <TournamentTable
         :key="'t-' + mode"
         :cell-data="currentState.cellData"
@@ -38,7 +81,7 @@
         :selected-dlc-idx="currentState.selectedDlcIdx"
         @dlc-select="handleDlcSelect"
       />
-    </template>
+    </div>
 
     <LoadingMask :visible="loadingVisible" :text="loadingText" />
   </div>
@@ -106,6 +149,7 @@ export default {
       zoom: 1,
       loadingVisible: false,
       loadingText: '正在处理...',
+      randomPoem: '',
       perMode: {
         [MODES.M64]: freshState(),
         [MODES.M288]: freshState()
@@ -126,11 +170,10 @@ export default {
     currentState() {
       if (!this.mode) return freshState();
       return this.perMode[this.mode];
-    },
-    pageTitle() {
-      if (this.meta) return this.meta.title;
-      return '苏轼诗文作品n选1';
     }
+  },
+  mounted() {
+    this.fetchRandomPoem();
   },
   watch: {
     zoom: {
@@ -144,6 +187,31 @@ export default {
     }
   },
   methods: {
+    async fetchRandomPoem() {
+      const files = [
+        '苏轼诗词精选288选1.txt',
+        '苏轼诗词精选288选1dlc.txt',
+        '苏轼诗词精选64版1.txt',
+        '苏轼诗词精选64选1dlc.txt'
+      ];
+      const all = [];
+      for (const f of files) {
+        try {
+          const resp = await fetch(f, { cache: 'no-store' });
+          if (resp.ok) {
+            const text = await resp.text();
+            const parsed = parseDlcText(text);
+            if (parsed && parsed.length > 0) all.push(...parsed);
+          }
+        } catch (e) {}
+      }
+      if (all.length > 0) {
+        const p = all[Math.floor(Math.random() * all.length)];
+        const t = p.title || '';
+        const c = p.content || '';
+        this.randomPoem = (t + ' ' + c).trim();
+      }
+    },
     applyZoom(z) {
       const v = (typeof z === 'number' && z > 0) ? z : 1;
       const t1 = document.getElementById('tournamentTable');
