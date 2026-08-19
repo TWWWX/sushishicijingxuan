@@ -1,7 +1,12 @@
 <template>
   <div class="dlc-section">
-    <h2 class="dlc-title">补充诗文库</h2>
-    <p class="dlc-hint">（单击选中补充诗文条目，再点主表第一列任意格进行交换；支持内容联动同步）</p>
+    <div class="dlc-title-row">
+      <div class="dlc-title-left">
+        <div class="title-deco-bar"></div>
+        <h2 class="dlc-title">补充诗文库</h2>
+      </div>
+      <p class="dlc-hint">单击选中补充诗文条目，再点主表第一列任意格进行交换；支持内容联动同步</p>
+    </div>
     <div class="dlc-wrapper">
       <table id="dlcTable">
         <thead>
@@ -54,7 +59,7 @@ export default {
     cellStyle(r, c) {
       const idx = this.dlcIdx(r, c);
       if (idx >= (this.dlcData || []).length) {
-        return { background: '#f8faf7', cursor: 'default' };
+        return { background: '#faf9f6', cursor: 'default' };
       }
       return {};
     },

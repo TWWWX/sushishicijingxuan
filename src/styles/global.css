@@ -115,6 +115,11 @@ body {
   margin: 40px 0 20px;
   line-height: 1.8;
 }
+.random-poem-title {
+  font-size: 11px;
+  margin-top: 4px;
+  opacity: 0.8;
+}
 
 /* ==================== 表格页 ==================== */
 .table-page { animation: fadeIn 0.3s ease; }
@@ -287,13 +292,13 @@ table {
   padding: 8px !important;
 }
 th {
-  background: #4a7a52;
+  background: #8fae93;
   color: #faf9f6;
   padding: 1px 1px;
   text-align: center;
   font-weight: 600;
   font-size: 13px;
-  border: 1px solid #3e6b45;
+  border: 1px solid #7a9a7e;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -305,7 +310,7 @@ th {
 }
 th.col-0 { padding: 1px 1px; font-size: 12px; }
 th.col-1 { padding: 1px 1px; font-size: 13px; }
-th.hide-col { background: #6b866b !important; }
+th.hide-col { background: #b8cdb8 !important; color: #6b866b; }
 th.hide-col::after {
   content: '（隐藏内容）';
   margin-left: 6px;
@@ -381,21 +386,31 @@ td[contenteditable="true"] {
 
 /* ==================== 补充诗文 ==================== */
 .dlc-section { margin-top: 12px; }
-.dlc-title {
-  text-align: center;
-  color: #2c3e2c;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 3px;
+.dlc-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 4px;
   padding-bottom: 3px;
   border-bottom: 1px solid #b8cdb8;
 }
+.dlc-title-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dlc-title {
+  color: #2c3e2c;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
 .dlc-hint {
-  text-align: center;
+  margin-left: auto;
   color: #6b866b;
   font-size: 12px;
-  margin-bottom: 4px;
+  text-align: right;
 }
 .dlc-wrapper {
   overflow-x: auto;
@@ -413,12 +428,12 @@ td[contenteditable="true"] {
   table-layout: fixed;
 }
 #dlcTable th {
-  background: #6b866b;
+  background: #a3bca8;
   color: #faf9f6;
   padding: 5px 4px;
   font-size: 12px;
   text-align: center;
-  border: 1px solid #4a7a52;
+  border: 1px solid #8fae93;
   letter-spacing: 1px;
   position: sticky;
   top: 0;
@@ -518,8 +533,9 @@ td[contenteditable="true"] {
   .poem-content { font-size: 8.8px; }
   .table-wrapper { max-height: 70vh; }
   .dlc-section { margin-top: 10px; }
+  .dlc-title-row { flex-wrap: wrap; }
   .dlc-title { font-size: 12px; letter-spacing: 2px; }
-  .dlc-hint { font-size: 9px; }
+  .dlc-hint { font-size: 9px; margin-left: 0; width: 100%; }
   .dlc-wrapper { max-height: 40vh; }
   #dlcTable td, #dlcTable th { padding: 1px 2px; font-size: 8.3px; }
   #dlcTable th { font-size: 9px; }

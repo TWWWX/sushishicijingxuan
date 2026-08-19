@@ -13,17 +13,11 @@
 
       <div class="author-note-wrapper">
         <div class="author-note-bar"></div>
-        <div class="author-note-box">网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀 欢迎关注公众号【东坡墙】 QQ【3301590656】</div>
+        <div class="author-note-box">网页制作 - 蟋蟀丨诗文筛汇 - 嫻菜无敌 蟋蟀
+欢迎关注公众号「东坡墙」QQ「3301590656」</div>
       </div>
 
       <div class="entry-cards">
-        <div class="entry-card" @click="switchMode('288')">
-          <div class="card-deco-bar"></div>
-          <div class="card-body">
-            <div class="card-title">苏轼诗文作品</div>
-            <div class="card-subtitle">288选1</div>
-          </div>
-        </div>
         <div class="entry-card" @click="switchMode('64')">
           <div class="card-deco-bar"></div>
           <div class="card-body">
@@ -31,9 +25,19 @@
             <div class="card-subtitle">64选1</div>
           </div>
         </div>
+        <div class="entry-card" @click="switchMode('288')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">苏轼诗文作品</div>
+            <div class="card-subtitle">288选1</div>
+          </div>
+        </div>
       </div>
 
-      <div class="random-poem">「{{ randomPoem }}」</div>
+      <div class="random-poem">
+        <div>「{{ randomPoemContent }}」</div>
+        <div class="random-poem-title">{{ randomPoemTitle }}</div>
+      </div>
     </div>
 
     <!-- 表格页 -->
@@ -41,8 +45,8 @@
       <div class="table-page-header">
         <a class="back-link" @click="switchMode(null)">← 返回主页</a>
         <div class="tabs">
-          <div class="tab" :class="{ active: mode === '288' }" @click="switchMode('288')">苏轼诗文作品288选1</div>
           <div class="tab" :class="{ active: mode === '64' }" @click="switchMode('64')">苏轼诗文作品64选1</div>
+          <div class="tab" :class="{ active: mode === '288' }" @click="switchMode('288')">苏轼诗文作品288选1</div>
         </div>
       </div>
 
@@ -149,7 +153,8 @@ export default {
       zoom: 1,
       loadingVisible: false,
       loadingText: '正在处理...',
-      randomPoem: '',
+      randomPoemContent: '',
+      randomPoemTitle: '',
       perMode: {
         [MODES.M64]: freshState(),
         [MODES.M288]: freshState()
@@ -207,9 +212,8 @@ export default {
       }
       if (all.length > 0) {
         const p = all[Math.floor(Math.random() * all.length)];
-        const t = p.title || '';
-        const c = p.content || '';
-        this.randomPoem = (t + ' ' + c).trim();
+        this.randomPoemContent = p.content || '';
+        this.randomPoemTitle = p.title || '';
       }
     },
     applyZoom(z) {
