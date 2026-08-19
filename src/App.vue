@@ -59,6 +59,7 @@
       <ControlBar
         :filler-name.sync="fillerName"
         :zoom="zoom"
+        :mode="mode"
         @zoom-in="zoomIn"
         @zoom-out="zoomOut"
         @zoom-reset="zoomReset"
