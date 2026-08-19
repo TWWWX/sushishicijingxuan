@@ -2,51 +2,83 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
+// 定义一个统一添加 CORS 头的函数
+function corsResponse(body, status = 200, extraHeaders = {}) {
+  return new Response(body, {
+    status,
+    headers: {
+      "Access-Control-Allow-Origin": "*",   // 允许所有域名（或可改为你的具体域名）
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      ...extraHeaders,
+    },
+  });
+}
+
 export async function onRequest(context) {
-    const url = new URL(context.request.url);
-    const fileName = url.searchParams.get('fileName');
-    const folder = url.searchParams.get('folder');
-
-    // 1. 参数校验
-    if (!fileName || !folder) {
-        return new Response('缺少 fileName 或 folder 参数', { status: 400 });
-    }
-
-    // 2. 只允许传到指定的两个文件夹（安全白名单）
-    if (!['shiwen-288', 'shiwen-64'].includes(folder)) {
-        return new Response('不允许的文件夹名称', { status: 403 });
-    }
-
-    // 3. 生成唯一文件名（防止重名覆盖）
-    const uniqueKey = `${folder}/${Date.now()}-${fileName}`;
-
-    // 4. 初始化 R2 客户端（使用环境变量）
-    const R2 = new S3Client({
-        region: 'auto',
-        endpoint: `https://${context.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-        credentials: {
-            accessKeyId: context.env.R2_ACCESS_KEY_ID,
-            secretAccessKey: context.env.R2_SECRET_ACCESS_KEY,
-        },
+  // 处理 OPTIONS 预检请求（CORS 必须）
+  if (context.request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Max-Age": "86400",
+      },
     });
+  }
 
-    const command = new PutObjectCommand({
-        Bucket: context.env.R2_BUCKET_NAME,
-        Key: uniqueKey,
-    });
+  const url = new URL(context.request.url);
+  const fileName = url.searchParams.get("fileName");
+  const folder = url.searchParams.get("folder");
 
-    try {
-        const signedUrl = await getSignedUrl(R2, command, { expiresIn: 3600 });
-        return new Response(JSON.stringify({
-            signedUrl: signedUrl,
-            fileKey: uniqueKey
-        }), {
-            headers: { 'Content-Type': 'application/json' }
-        });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-        });
-    }
+  // 参数校验
+  if (!fileName || !folder) {
+    return corsResponse(
+      JSON.stringify({ error: "缺少 fileName 或 folder 参数" }),
+      400,
+      { "Content-Type": "application/json" }
+    );
+  }
+
+  // 文件夹白名单
+  if (!["shiwen-288", "shiwen-64"].includes(folder)) {
+    return corsResponse(
+      JSON.stringify({ error: "不允许的文件夹名称" }),
+      403,
+      { "Content-Type": "application/json" }
+    );
+  }
+
+  const uniqueKey = `${folder}/${Date.now()}-${fileName}`;
+
+  const R2 = new S3Client({
+    region: "auto",
+    endpoint: `https://${context.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+      accessKeyId: context.env.R2_ACCESS_KEY_ID,
+      secretAccessKey: context.env.R2_SECRET_ACCESS_KEY,
+    },
+  });
+
+  const command = new PutObjectCommand({
+    Bucket: context.env.R2_BUCKET_NAME,
+    Key: uniqueKey,
+  });
+
+  try {
+    const signedUrl = await getSignedUrl(R2, command, { expiresIn: 3600 });
+    return corsResponse(
+      JSON.stringify({ signedUrl, fileKey: uniqueKey }),
+      200,
+      { "Content-Type": "application/json" }
+    );
+  } catch (error) {
+    return corsResponse(
+      JSON.stringify({ error: error.message }),
+      500,
+      { "Content-Type": "application/json" }
+    );
+  }
 }

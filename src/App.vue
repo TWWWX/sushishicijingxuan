@@ -372,12 +372,18 @@ export default {
         columnConfig: this.meta.columnConfig,
         headerLabels: this.meta.headerLabels,
         totalRows: this.totalRows,
-        title: this.meta.title
+        title: this.meta.title,
+        fillerName: this.fillerName,
+        mode: this.mode
       });
     },
     async handleUploadCSV() {
       if (!this.mode) return;
       if (this.uploading) return;
+      if (!this.fillerName || !this.fillerName.trim()) {
+        alert('请先填写"填表人"再上传');
+        return;
+      }
       this.uploading = true;
       try {
         const folder = this.mode === '288' ? 'shiwen-288' : 'shiwen-64';
@@ -388,6 +394,8 @@ export default {
           totalRows: this.totalRows,
           title: this.meta.title,
           folder,
+          fillerName: this.fillerName,
+          mode: this.mode,
           onStatus: (status, errMsg) => {
             if (status === 'success') {
               alert('上传成功');
@@ -410,7 +418,8 @@ export default {
           show: (t) => this.showLoading(t),
           hide: () => this.hideLoading()
         },
-        title: this.meta.title
+        title: this.meta.title,
+        mode: this.mode
       });
     },
     handleReset() {

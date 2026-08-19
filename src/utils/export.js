@@ -53,23 +53,24 @@ export function getCSVString(options) {
 }
 
 export function exportCSV(options) {
-  const { title } = options || {};
+  const { fillerName, mode } = options || {};
   const csvContent = getCSVString(options);
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
+  const name = (fillerName || '未署名') + '_sushishiwen_' + (mode || '') + '_' + formatDate();
   link.href = URL.createObjectURL(blob);
-  link.download = (title || '苏轼诗文作品') + '_' + formatDate() + '.csv';
+  link.download = name + '.csv';
   link.click();
   URL.revokeObjectURL(link.href);
 }
 
 export async function uploadCSV(options) {
-  const { cellData, columnConfig, headerLabels, totalRows, title, folder, onStatus } = options || {};
+  const { cellData, columnConfig, headerLabels, totalRows, title, folder, fillerName, mode, onStatus } = options || {};
   if (onStatus) onStatus('uploading');
   try {
     const csvContent = getCSVString({ cellData, columnConfig, headerLabels, totalRows, title });
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const fileName = 'result.csv';
+    const fileName = (fillerName || '未署名') + '_sushishiwen_' + (mode || '') + '_' + formatDate() + '.csv';
     const apiUrl = `/api/upload?fileName=${encodeURIComponent(fileName)}&folder=${encodeURIComponent(folder)}`;
     const resp = await fetch(apiUrl);
     if (!resp.ok) {
@@ -95,7 +96,7 @@ export async function uploadCSV(options) {
 }
 
 export async function exportPNG(options) {
-  const { fillerName, loadingCallbacks, title } = options || {};
+  const { fillerName, loadingCallbacks, title, mode } = options || {};
   const { show, hide } = loadingCallbacks || {};
   if (show) show('正在生成长图，请稍候...');
   try {
@@ -183,7 +184,7 @@ export async function exportPNG(options) {
     canvas.toBlob((blob) => {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = (title || '苏轼诗文作品_东坡墙出品') + '_' + formatDate() + '.png';
+      link.download = (fillerName || '未署名') + '_sushishiwen_' + (mode || '') + '_' + formatDate() + '.png';
       link.click();
       URL.revokeObjectURL(link.href);
       if (hide) hide();
