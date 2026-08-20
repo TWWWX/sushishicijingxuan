@@ -63,7 +63,7 @@ export const MODE_META = {
   [MODES.POEM64]: {
     name: '诗64选1',
     n: 64,
-    title: '苏轼诗作品64选1',
+    title: '苏轼诗作64选1',
     dataFile: '苏轼诗精选64选1.txt',
     dlcFile: '苏轼诗精选64选1dlc.txt',
     firstColLabel: '64篇苏轼诗',
@@ -90,7 +90,7 @@ export const MODE_META = {
   [MODES.WORD64]: {
     name: '词64选1',
     n: 64,
-    title: '苏轼词作品64选1',
+    title: '苏轼词作64选1',
     dataFile: '苏轼词精选64选1.txt',
     dlcFile: '苏轼词精选64选1dlc.txt',
     firstColLabel: '64篇苏轼词',
