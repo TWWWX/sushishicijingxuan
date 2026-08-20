@@ -43,7 +43,7 @@ export async function onRequest(context) {
   }
 
   // 文件夹白名单
-  if (!["shiwen-288", "shiwen-64"].includes(folder)) {
+  if (!["shiwen-288", "shiwen-64", "shiwen-poem64", "shiwen-word64"].includes(folder)) {
     return corsResponse(
       JSON.stringify({ error: "不允许的文件夹名称" }),
       403,

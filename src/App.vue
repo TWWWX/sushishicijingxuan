@@ -32,6 +32,20 @@
             <div class="card-subtitle">288选1</div>
           </div>
         </div>
+        <div class="entry-card" @click="switchMode('poem64')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">苏轼诗作品</div>
+            <div class="card-subtitle">64选1</div>
+          </div>
+        </div>
+        <div class="entry-card" @click="switchMode('word64')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">苏轼词作品</div>
+            <div class="card-subtitle">64选1</div>
+          </div>
+        </div>
       </div>
 
       <div class="random-poem">
@@ -47,6 +61,8 @@
         <div class="tabs">
           <div class="tab" :class="{ active: mode === '64' }" @click="switchMode('64')">苏轼诗文作品64选1</div>
           <div class="tab" :class="{ active: mode === '288' }" @click="switchMode('288')">苏轼诗文作品288选1</div>
+          <div class="tab" :class="{ active: mode === 'poem64' }" @click="switchMode('poem64')">苏轼诗作品64选1</div>
+          <div class="tab" :class="{ active: mode === 'word64' }" @click="switchMode('word64')">苏轼词作品64选1</div>
         </div>
       </div>
 
@@ -160,7 +176,9 @@ export default {
       randomPoemTitle: '',
       perMode: {
         [MODES.M64]: freshState(),
-        [MODES.M288]: freshState()
+        [MODES.M288]: freshState(),
+        [MODES.POEM64]: freshState(),
+        [MODES.WORD64]: freshState()
       }
     };
   },
@@ -200,7 +218,11 @@ export default {
         '苏轼诗词精选288选1.txt',
         '苏轼诗词精选288选1dlc.txt',
         '苏轼诗词精选64版1.txt',
-        '苏轼诗词精选64选1dlc.txt'
+        '苏轼诗词精选64选1dlc.txt',
+        '苏轼诗精选64选1.txt',
+        '苏轼诗精选64选1dlc.txt',
+        '苏轼词精选64选1.txt',
+        '苏轼词精选64选1dlc.txt'
       ];
       const all = [];
       for (const f of files) {
@@ -386,7 +408,13 @@ export default {
       }
       this.uploading = true;
       try {
-        const folder = this.mode === '288' ? 'shiwen-288' : 'shiwen-64';
+        const folderMap = {
+          '288': 'shiwen-288',
+          '64': 'shiwen-64',
+          'poem64': 'shiwen-poem64',
+          'word64': 'shiwen-word64'
+        };
+        const folder = folderMap[this.mode] || 'shiwen-64';
         await uploadCSVUtil({
           cellData: this.currentState.cellData,
           columnConfig: this.meta.columnConfig,
