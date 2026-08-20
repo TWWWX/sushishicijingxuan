@@ -1,6 +1,6 @@
 export const MODES = {
   M64: '64',
-  M288: '288',
+  M320: '320',
   POEM64: 'poem64',
   WORD64: 'word64'
 };
@@ -12,7 +12,7 @@ export const MODE_META = {
     title: '苏轼作品64选1',
     dataFile: '苏轼诗词精选64版1.txt',
     dlcFile: '苏轼诗词精选64选1dlc.txt',
-    firstColLabel: '64篇苏轼作品',
+    firstColLabel: '64首苏轼作品',
     columnConfig: [
       { count: 64, rowSpan: 1 },
       { count: 32, rowSpan: 2 },
@@ -23,7 +23,7 @@ export const MODE_META = {
       { count: 1,  rowSpan: 64 }
     ],
     headerLabels: [
-      '64篇苏轼作品',
+      '64首苏轼作品',
       '前32',
       '前16',
       '前8',
@@ -33,26 +33,26 @@ export const MODE_META = {
     ],
     dlcLabel: '作品'
   },
-  [MODES.M288]: {
-    name: '288选1',
-    n: 288,
-    title: '苏轼作品288选1',
-    dataFile: '苏轼诗词精选288选1.txt',
-    dlcFile: '苏轼诗词精选288选1dlc.txt',
-    firstColLabel: '288篇苏轼作品',
+  [MODES.M320]: {
+    name: '320选1',
+    n: 320,
+    title: '苏轼作品320选1',
+    dataFile: '苏轼诗词精选320选1.txt',
+    dlcFile: '苏轼诗词精选320选1dlc.txt',
+    firstColLabel: '320首苏轼作品',
     columnConfig: [
-      { count: 288, rowSpan: 1 },
-      { count: 72,  rowSpan: 4 },
-      { count: 24,  rowSpan: 12 },
-      { count: 8,   rowSpan: 36 },
-      { count: 4,   rowSpan: 72 },
-      { count: 2,   rowSpan: 144 },
-      { count: 1,   rowSpan: 288 }
+      { count: 320, rowSpan: 1 },
+      { count: 64,  rowSpan: 5 },
+      { count: 16,  rowSpan: 20 },
+      { count: 8,   rowSpan: 40 },
+      { count: 4,   rowSpan: 80 },
+      { count: 2,   rowSpan: 160 },
+      { count: 1,   rowSpan: 320 }
     ],
     headerLabels: [
-      '288篇苏轼作品',
-      '前72',
-      '前24',
+      '320首苏轼作品',
+      '前64',
+      '前16',
       '前8',
       '前4',
       '前2',
@@ -66,7 +66,7 @@ export const MODE_META = {
     title: '苏轼诗作64选1',
     dataFile: '苏轼诗精选64选1.txt',
     dlcFile: '苏轼诗精选64选1dlc.txt',
-    firstColLabel: '64篇苏轼诗',
+    firstColLabel: '64首苏轼诗',
     columnConfig: [
       { count: 64, rowSpan: 1 },
       { count: 32, rowSpan: 2 },
@@ -77,7 +77,7 @@ export const MODE_META = {
       { count: 1,  rowSpan: 64 }
     ],
     headerLabels: [
-      '64篇苏轼诗',
+      '64首苏轼诗',
       '前32',
       '前16',
       '前8',
@@ -93,7 +93,7 @@ export const MODE_META = {
     title: '苏轼词作64选1',
     dataFile: '苏轼词精选64选1.txt',
     dlcFile: '苏轼词精选64选1dlc.txt',
-    firstColLabel: '64篇苏轼词',
+    firstColLabel: '64首苏轼词',
     columnConfig: [
       { count: 64, rowSpan: 1 },
       { count: 32, rowSpan: 2 },
@@ -104,7 +104,7 @@ export const MODE_META = {
       { count: 1,  rowSpan: 64 }
     ],
     headerLabels: [
-      '64篇苏轼词',
+      '64首苏轼词',
       '前32',
       '前16',
       '前8',

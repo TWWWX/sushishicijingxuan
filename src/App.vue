@@ -25,11 +25,11 @@
             <div class="card-subtitle">64选1</div>
           </div>
         </div>
-        <div class="entry-card" @click="switchMode('288')">
+        <div class="entry-card" @click="switchMode('320')">
           <div class="card-deco-bar"></div>
           <div class="card-body">
             <div class="card-title">苏轼作品</div>
-            <div class="card-subtitle">288选1</div>
+            <div class="card-subtitle">320选1</div>
           </div>
         </div>
         <div class="entry-card" @click="switchMode('poem64')">
@@ -60,7 +60,7 @@
         <a class="back-link" @click="switchMode(null)">← 返回主页</a>
         <div class="tabs">
           <div class="tab" :class="{ active: mode === '64' }" @click="switchMode('64')">苏轼作品64选1</div>
-          <div class="tab" :class="{ active: mode === '288' }" @click="switchMode('288')">苏轼作品288选1</div>
+          <div class="tab" :class="{ active: mode === '320' }" @click="switchMode('320')">苏轼作品320选1</div>
           <div class="tab" :class="{ active: mode === 'poem64' }" @click="switchMode('poem64')">苏轼诗作64选1</div>
           <div class="tab" :class="{ active: mode === 'word64' }" @click="switchMode('word64')">苏轼词作64选1</div>
         </div>
@@ -177,7 +177,7 @@ export default {
       randomPoemTitle: '',
       perMode: {
         [MODES.M64]: freshState(),
-        [MODES.M288]: freshState(),
+        [MODES.M320]: freshState(),
         [MODES.POEM64]: freshState(),
         [MODES.WORD64]: freshState()
       }
@@ -216,8 +216,8 @@ export default {
   methods: {
     async fetchRandomPoem() {
       const files = [
-        '苏轼诗词精选288选1.txt',
-        '苏轼诗词精选288选1dlc.txt',
+        '苏轼诗词精选320选1.txt',
+        '苏轼诗词精选320选1dlc.txt',
         '苏轼诗词精选64版1.txt',
         '苏轼诗词精选64选1dlc.txt',
         '苏轼诗精选64选1.txt',
@@ -410,7 +410,7 @@ export default {
       this.uploading = true;
       try {
         const folderMap = {
-          '288': 'shiwen-288',
+          '320': 'shiwen-320',
           '64': 'shiwen-64',
           'poem64': 'shiwen-poem64',
           'word64': 'shiwen-word64'
