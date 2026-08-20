@@ -123,7 +123,7 @@ export async function exportPNG(options) {
     titleDiv.style.borderBottom = '1px solid #b8cdb8';
     titleDiv.style.background = '#faf9f6';
     titleDiv.style.fontFamily = '"Noto Serif SC", "Songti SC", "SimSun", "STSong", serif';
-    titleDiv.textContent = title || '苏轼诗文作品';
+    titleDiv.textContent = title || '苏轼作品';
     exportContainer.appendChild(titleDiv);
 
     const subDiv = document.createElement('div');

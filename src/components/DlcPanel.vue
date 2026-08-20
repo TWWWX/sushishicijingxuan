@@ -3,15 +3,15 @@
     <div class="dlc-title-row">
       <div class="dlc-title-left">
         <div class="title-deco-bar"></div>
-        <h2 class="dlc-title">补充诗文库</h2>
+        <h2 class="dlc-title">补充{{ dlcLabel }}库</h2>
       </div>
-      <p class="dlc-hint">单击选中补充诗文条目，再点主表第一列任意格进行交换；支持内容联动同步</p>
+      <p class="dlc-hint">单击选中补充{{ dlcLabel }}条目，再点主表第一列任意格进行交换；支持内容联动同步</p>
     </div>
     <div class="dlc-wrapper">
       <table id="dlcTable">
         <thead>
           <tr id="dlcHeaderRow">
-            <th v-for="c in dlcCols" :key="'dlc-th-' + c">补充诗文第{{ c }}列</th>
+            <th v-for="c in dlcCols" :key="'dlc-th-' + c">补充{{ dlcLabel }}第{{ c }}列</th>
           </tr>
         </thead>
         <tbody id="dlcBody">
@@ -40,7 +40,8 @@ export default {
   name: 'DlcPanel',
   props: {
     dlcData: { type: Array, default: () => [] },
-    selectedDlcIdx: { type: Number, default: null }
+    selectedDlcIdx: { type: Number, default: null },
+    dlcLabel: { type: String, default: '作品' }
   },
   computed: {
     dlcCols() { return DLC_COLS; },

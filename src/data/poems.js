@@ -9,10 +9,10 @@ export const MODE_META = {
   [MODES.M64]: {
     name: '64选1',
     n: 64,
-    title: '苏轼诗文作品64选1',
+    title: '苏轼作品64选1',
     dataFile: '苏轼诗词精选64版1.txt',
     dlcFile: '苏轼诗词精选64选1dlc.txt',
-    firstColLabel: '64篇苏轼诗文',
+    firstColLabel: '64篇苏轼作品',
     columnConfig: [
       { count: 64, rowSpan: 1 },
       { count: 32, rowSpan: 2 },
@@ -23,22 +23,23 @@ export const MODE_META = {
       { count: 1,  rowSpan: 64 }
     ],
     headerLabels: [
-      '64篇苏轼诗文',
+      '64篇苏轼作品',
       '前32',
       '前16',
       '前8',
       '前4',
       '前2',
       '冠军'
-    ]
+    ],
+    dlcLabel: '作品'
   },
   [MODES.M288]: {
     name: '288选1',
     n: 288,
-    title: '苏轼诗文作品288选1',
+    title: '苏轼作品288选1',
     dataFile: '苏轼诗词精选288选1.txt',
     dlcFile: '苏轼诗词精选288选1dlc.txt',
-    firstColLabel: '288篇苏轼诗文',
+    firstColLabel: '288篇苏轼作品',
     columnConfig: [
       { count: 288, rowSpan: 1 },
       { count: 72,  rowSpan: 4 },
@@ -49,14 +50,15 @@ export const MODE_META = {
       { count: 1,   rowSpan: 288 }
     ],
     headerLabels: [
-      '288篇苏轼诗文',
+      '288篇苏轼作品',
       '前72',
       '前24',
       '前8',
       '前4',
       '前2',
       '冠军'
-    ]
+    ],
+    dlcLabel: '作品'
   },
   [MODES.POEM64]: {
     name: '诗64选1',
@@ -82,7 +84,8 @@ export const MODE_META = {
       '前4',
       '前2',
       '冠军'
-    ]
+    ],
+    dlcLabel: '诗'
   },
   [MODES.WORD64]: {
     name: '词64选1',
@@ -108,7 +111,8 @@ export const MODE_META = {
       '前4',
       '前2',
       '冠军'
-    ]
+    ],
+    dlcLabel: '词'
   }
 };
 

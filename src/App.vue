@@ -5,7 +5,7 @@
       <div class="home-header">
         <div class="home-title-row">
           <span class="title-line"></span>
-          <h1 class="home-title">苏轼诗文作品 n 选 1</h1>
+          <h1 class="home-title">苏轼作品 n 选 1</h1>
           <span class="title-line"></span>
         </div>
         <p class="home-subtitle">— 东坡墙 —</p>
@@ -21,14 +21,14 @@
         <div class="entry-card" @click="switchMode('64')">
           <div class="card-deco-bar"></div>
           <div class="card-body">
-            <div class="card-title">苏轼诗文作品</div>
+            <div class="card-title">苏轼作品</div>
             <div class="card-subtitle">64选1</div>
           </div>
         </div>
         <div class="entry-card" @click="switchMode('288')">
           <div class="card-deco-bar"></div>
           <div class="card-body">
-            <div class="card-title">苏轼诗文作品</div>
+            <div class="card-title">苏轼作品</div>
             <div class="card-subtitle">288选1</div>
           </div>
         </div>
@@ -59,8 +59,8 @@
       <div class="table-page-header">
         <a class="back-link" @click="switchMode(null)">← 返回主页</a>
         <div class="tabs">
-          <div class="tab" :class="{ active: mode === '64' }" @click="switchMode('64')">苏轼诗文作品64选1</div>
-          <div class="tab" :class="{ active: mode === '288' }" @click="switchMode('288')">苏轼诗文作品288选1</div>
+          <div class="tab" :class="{ active: mode === '64' }" @click="switchMode('64')">苏轼作品64选1</div>
+          <div class="tab" :class="{ active: mode === '288' }" @click="switchMode('288')">苏轼作品288选1</div>
           <div class="tab" :class="{ active: mode === 'poem64' }" @click="switchMode('poem64')">苏轼诗作品64选1</div>
           <div class="tab" :class="{ active: mode === 'word64' }" @click="switchMode('word64')">苏轼词作品64选1</div>
         </div>
@@ -101,6 +101,7 @@
         :key="'d-' + mode"
         :dlc-data="currentState.dlcData"
         :selected-dlc-idx="currentState.selectedDlcIdx"
+        :dlc-label="meta.dlcLabel"
         @dlc-select="handleDlcSelect"
       />
     </div>
