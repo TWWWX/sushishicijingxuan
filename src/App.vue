@@ -60,11 +60,18 @@
             <div class="card-subtitle">64选1</div>
           </div>
         </div>
-                <div class="entry-card" @click="switchMode('ersu64')">
+        <div class="entry-card" @click="switchMode('ersu64')">
           <div class="card-deco-bar"></div>
           <div class="card-body">
             <div class="card-title">二苏诗文</div>
             <div class="card-subtitle">64选1</div>
+          </div>
+        </div>
+        <div class="entry-card" @click="switchMode('figure')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">宋代人物</div>
+            <div class="card-subtitle">n选1</div>
           </div>
         </div>
       </div>
@@ -87,47 +94,100 @@
           <div class="tab" :class="{ active: mode === 'eat64' }" @click="switchMode('eat64')">苏轼吃吃吃64选1</div>
           <div class="tab" :class="{ active: mode === 'drink64' }" @click="switchMode('drink64')">苏轼喝喝喝64选1</div>
           <div class="tab" :class="{ active: mode === 'ersu64' }" @click="switchMode('ersu64')">二苏诗文64选1</div>
+          <div class="tab" :class="{ active: mode === 'figure' }" @click="switchMode('figure')">宋代人物n选1</div>
         </div>
       </div>
 
-      <div class="table-title-row">
-        <div class="title-deco-bar"></div>
-        <h2 class="table-page-title">{{ meta.title }}</h2>
-        <p class="hint">单击单元格 → 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 → 编辑内容 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 ↔ 隐藏/显示该列诗文内容</p>
-      </div>
+      <!-- 宋代人物聚合页（上下两个 n 选1 表格 + 致谢栏） -->
+      <template v-if="isAggregate(mode)">
+        <div class="table-title-row">
+          <div class="title-deco-bar"></div>
+          <h2 class="table-page-title">{{ meta.title }}</h2>
+          <p class="hint">单击单元格 → 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 → 编辑内容 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 ↔ 隐藏/显示该列内容</p>
+        </div>
 
-      <ControlBar
-        :filler-name.sync="fillerName"
-        :zoom="zoom"
-        :uploading="uploading"
-        @zoom-in="zoomIn"
-        @zoom-out="zoomOut"
-        @zoom-reset="zoomReset"
-        @export-csv="handleExportCSV"
-        @upload-csv="handleUploadCSV"
-        @export-png="handleExportPNG"
-        @reset="handleReset"
-      />
+        <div class="acknowledge-box">该部分表格由表格原作者：xhs「LinkeArisu」QQ「2310829476」制作，感谢老师搬运授权。</div>
 
-      <TournamentTable
-        :key="'t-' + mode"
-        :cell-data="currentState.cellData"
-        :fill-target-map="currentState.fillTargetMap"
-        :col-hide-content="currentState.colHideContent"
-        :column-config="meta.columnConfig"
-        :header-labels="meta.headerLabels"
-        :total-rows="totalRows"
-        @header-dblclick="handleHeaderDblClick"
-        @cell-click="handleCellClick"
-        @cell-edit="handleCellEdit"
-      />
-      <DlcPanel
-        :key="'d-' + mode"
-        :dlc-data="currentState.dlcData"
-        :selected-dlc-idx="currentState.selectedDlcIdx"
-        :dlc-label="meta.dlcLabel"
-        @dlc-select="handleDlcSelect"
-      />
+        <div v-for="subMode in subModesOf(mode)" :key="'sub-' + subMode" class="figure-sub-section">
+          <div class="table-sub-title-row">
+            <div class="title-deco-bar"></div>
+            <h3 class="table-page-subtitle">{{ metaOf(subMode).title }}</h3>
+          </div>
+
+          <ControlBar
+            :filler-name.sync="fillerNameMap[subMode]"
+            :zoom="zoomOf(subMode)"
+            :uploading="uploadingOf(subMode)"
+            @zoom-in="zoomIn(subMode)"
+            @zoom-out="zoomOut(subMode)"
+            @zoom-reset="zoomReset(subMode)"
+            @export-csv="handleExportCSV(subMode)"
+            @upload-csv="handleUploadCSV(subMode)"
+            @export-png="handleExportPNG(subMode)"
+            @reset="handleReset(subMode)"
+          />
+
+          <TournamentTable
+            :key="'t-' + subMode"
+            :cell-data="stateOf(subMode).cellData"
+            :fill-target-map="stateOf(subMode).fillTargetMap"
+            :col-hide-content="stateOf(subMode).colHideContent"
+            :column-config="metaOf(subMode).columnConfig"
+            :header-labels="metaOf(subMode).headerLabels"
+            :total-rows="totalRowsOf(subMode)"
+            :text-mode="metaOf(subMode).textMode || 'default'"
+            :wrapper-id="wrapperIdOf(subMode)"
+            :table-id="tableIdOf(subMode)"
+            @header-dblclick="(col) => handleHeaderDblClick(subMode, col)"
+            @cell-click="(p) => handleCellClick(subMode, p)"
+            @cell-edit="(p) => handleCellEdit(subMode, p)"
+          />
+        </div>
+      </template>
+
+      <!-- 普通单表格页 -->
+      <template v-else>
+        <div class="table-title-row">
+          <div class="title-deco-bar"></div>
+          <h2 class="table-page-title">{{ meta.title }}</h2>
+          <p class="hint">单击单元格 → 快速向右填充 &nbsp;&nbsp;|&nbsp;&nbsp; 双击单元格 → 编辑内容 &nbsp;&nbsp;|&nbsp;&nbsp; 双击表头列 ↔ 隐藏/显示该列诗文内容</p>
+        </div>
+
+        <ControlBar
+          :filler-name.sync="fillerNameMap[mode]"
+          :zoom="zoomOf(mode)"
+          :uploading="uploadingOf(mode)"
+          @zoom-in="zoomIn(mode)"
+          @zoom-out="zoomOut(mode)"
+          @zoom-reset="zoomReset(mode)"
+          @export-csv="handleExportCSV(mode)"
+          @upload-csv="handleUploadCSV(mode)"
+          @export-png="handleExportPNG(mode)"
+          @reset="handleReset(mode)"
+        />
+
+        <TournamentTable
+          :key="'t-' + mode"
+          :cell-data="stateOf(mode).cellData"
+          :fill-target-map="stateOf(mode).fillTargetMap"
+          :col-hide-content="stateOf(mode).colHideContent"
+          :column-config="meta.columnConfig"
+          :header-labels="meta.headerLabels"
+          :total-rows="totalRows"
+          :text-mode="meta.textMode || 'default'"
+          @header-dblclick="(col) => handleHeaderDblClick(mode, col)"
+          @cell-click="(p) => handleCellClick(mode, p)"
+          @cell-edit="(p) => handleCellEdit(mode, p)"
+        />
+        <DlcPanel
+          v-if="!meta.noDlc"
+          :key="'d-' + mode"
+          :dlc-data="stateOf(mode).dlcData"
+          :selected-dlc-idx="stateOf(mode).selectedDlcIdx"
+          :dlc-label="meta.dlcLabel"
+          @dlc-select="(idx) => handleDlcSelect(mode, idx)"
+        />
+      </template>
     </div>
 
     <LoadingMask :visible="loadingVisible" :text="loadingText" />
@@ -142,6 +202,7 @@ import LoadingMask from './components/LoadingMask.vue';
 import {
   MODES,
   MODE_META,
+  FIGURE_SUBMODES,
   getCellKey,
   buildInitialCellData,
   defaultDlcByMode
@@ -151,7 +212,8 @@ import {
   dataEqual,
   parsePlainToPoem,
   loadDlcFile,
-  parseDlcText
+  parseDlcText,
+  parseNameText
 } from './utils/poem';
 import { scheduleAutoFit } from './utils/columnWidth';
 import { exportCSV as exportCSVUtil, exportPNG as exportPNGUtil, uploadCSV as uploadCSVUtil } from './utils/export';
@@ -169,17 +231,21 @@ function freshState() {
   };
 }
 
-async function loadMainFile(url, fallback) {
+async function loadMainFile(url, fallback, parser) {
   try {
     const resp = await fetch(url, { cache: 'no-store' });
     if (resp.ok) {
       const text = await resp.text();
-      const parsed = parseDlcText(text);
+      const fn = parser || parseDlcText;
+      const parsed = fn(text);
       if (parsed && parsed.length > 0) return parsed;
     }
   } catch (e) {}
   return fallback ? [...fallback] : [];
 }
+
+const DEFAULT_FILLER = '';
+const DEFAULT_ZOOM = 1;
 
 export default {
   name: 'App',
@@ -191,14 +257,14 @@ export default {
   },
   data() {
     return {
-      fillerName: '',
       mode: null,
-      zoom: 1,
-      uploading: false,
       loadingVisible: false,
       loadingText: '正在处理...',
       randomPoemContent: '',
       randomPoemTitle: '',
+      fillerNameMap: {},
+      zoomMap: {},
+      uploadingMap: {},
       perMode: {
         [MODES.M64]: freshState(),
         [MODES.M320]: freshState(),
@@ -206,7 +272,9 @@ export default {
         [MODES.WORD64]: freshState(),
         [MODES.EAT64]: freshState(),
         [MODES.DRINK64]: freshState(),
-        [MODES.ERSU64]: freshState()
+        [MODES.ERSU64]: freshState(),
+        [MODES.FIGURE64]: freshState(),
+        [MODES.FIGURE256]: freshState()
       }
     };
   },
@@ -217,30 +285,52 @@ export default {
     },
     totalRows() {
       if (!this.mode) return 0;
-      const cfg = MODE_META[this.mode]?.columnConfig;
-      if (!cfg || cfg.length === 0) return 0;
-      return cfg[0].count * cfg[0].rowSpan;
-    },
-    currentState() {
-      if (!this.mode) return freshState();
-      return this.perMode[this.mode];
+      return this.totalRowsOf(this.mode);
     }
   },
   mounted() {
     this.fetchRandomPoem();
   },
   watch: {
-    zoom: {
-      immediate: true,
-      handler(v) {
-        this.$nextTick(() => this.applyZoom(v));
-      }
-    },
     mode() {
-      this.$nextTick(() => this.applyZoom(this.zoom));
+      this.$nextTick(() => {
+        if (this.isAggregate(this.mode)) {
+          for (const sm of this.subModesOf(this.mode)) {
+            this.applyZoom(sm, this.zoomOf(sm));
+          }
+        } else if (this.mode) {
+          this.applyZoom(this.mode, this.zoomOf(this.mode));
+        }
+      });
     }
   },
   methods: {
+    metaOf(key) { return MODE_META[key]; },
+    stateOf(key) {
+      return this.perMode[key] || freshState();
+    },
+    totalRowsOf(key) {
+      const cfg = MODE_META[key]?.columnConfig;
+      if (!cfg || cfg.length === 0) return 0;
+      return cfg[0].count * cfg[0].rowSpan;
+    },
+    subModesOf(key) {
+      if (key === MODES.FIGURE) return FIGURE_SUBMODES;
+      return [];
+    },
+    isAggregate(key) {
+      return !!MODE_META[key]?.aggregate && !!MODE_META[key]?.subModes?.length;
+    },
+    zoomOf(key) {
+      const v = this.zoomMap[key];
+      return (typeof v === 'number' && v > 0) ? v : DEFAULT_ZOOM;
+    },
+    uploadingOf(key) {
+      return !!this.uploadingMap[key];
+    },
+    wrapperIdOf(key) { return 'tableWrapper_' + key; },
+    tableIdOf(key) { return 'tournamentTable_' + key; },
+    dlcTableIdOf(key) { return 'dlcTable_' + key; },
     async fetchRandomPoem() {
       const files = [
         '苏轼诗词精选320选1.txt',
@@ -256,7 +346,9 @@ export default {
         '苏轼喝喝喝精选64选1.txt',
         '苏轼喝喝喝精选64选1dlc.txt',
         '二苏精选64选1.txt',
-        '二苏精选64选1dlc.txt'
+        '二苏精选64选1dlc.txt',
+        '宋代人物64选1.txt',
+        '宋代人物256选1.txt'
       ];
       const all = [];
       for (const f of files) {
@@ -275,16 +367,29 @@ export default {
         this.randomPoemTitle = p.title || '';
       }
     },
-    applyZoom(z) {
+    applyZoom(key, z) {
       const v = (typeof z === 'number' && z > 0) ? z : 1;
-      const t1 = document.getElementById('tournamentTable');
+      const t1 = document.getElementById(this.tableIdOf(key));
       if (t1) t1.style.zoom = v;
-      const t2 = document.getElementById('dlcTable');
+      const t2 = document.getElementById(this.dlcTableIdOf(key));
       if (t2) t2.style.zoom = v;
     },
-    zoomIn() { this.zoom = Math.min(2, Math.round((this.zoom + 0.1) * 10) / 10); },
-    zoomOut() { this.zoom = Math.max(0.4, Math.round((this.zoom - 0.1) * 10) / 10); },
-    zoomReset() { this.zoom = 1; },
+    zoomIn(key) {
+      const cur = this.zoomOf(key);
+      const next = Math.min(2, Math.round((cur + 0.1) * 10) / 10);
+      this.$set(this.zoomMap, key, next);
+      this.$nextTick(() => this.applyZoom(key, next));
+    },
+    zoomOut(key) {
+      const cur = this.zoomOf(key);
+      const next = Math.max(0.4, Math.round((cur - 0.1) * 10) / 10);
+      this.$set(this.zoomMap, key, next);
+      this.$nextTick(() => this.applyZoom(key, next));
+    },
+    zoomReset(key) {
+      this.$set(this.zoomMap, key, DEFAULT_ZOOM);
+      this.$nextTick(() => this.applyZoom(key, DEFAULT_ZOOM));
+    },
     showLoading(text) {
       this.loadingText = text || '正在处理...';
       this.loadingVisible = true;
@@ -292,40 +397,50 @@ export default {
     hideLoading() {
       this.loadingVisible = false;
     },
+    scheduleAutoFitFor(key) {
+      this.$nextTick(() => {
+        scheduleAutoFit(this.tableIdOf(key), this.stateOf(key).colHideContent);
+      });
+    },
     scheduleAutoFitAll() {
       this.$nextTick(() => {
-        if (this.mode) {
-          scheduleAutoFit('tournamentTable', this.currentState.colHideContent);
-          scheduleAutoFit('dlcTable', null);
+        if (this.isAggregate(this.mode)) {
+          for (const sm of this.subModesOf(this.mode)) {
+            scheduleAutoFit(this.tableIdOf(sm), this.stateOf(sm).colHideContent);
+          }
+        } else if (this.mode) {
+          scheduleAutoFit(this.tableIdOf(this.mode), this.stateOf(this.mode).colHideContent);
+          const dlcId = this.dlcTableIdOf(this.mode);
+          if (document.getElementById(dlcId)) scheduleAutoFit(dlcId, null);
         }
       });
     },
-    refreshSourceStyle(key) {
-      const s = this.currentState;
-      this.$set(s.fillTargetMap, key, s.fillTargetMap[key] || {});
+    refreshSourceStyle(key, cellKey) {
+      const s = this.stateOf(key);
+      this.$set(s.fillTargetMap, cellKey, s.fillTargetMap[cellKey] || {});
     },
-    detachFromSource(targetKey) {
-      const s = this.currentState;
+    detachFromSource(modeKey, targetKey) {
+      const s = this.stateOf(modeKey);
       const oldSourceKey = s.fillSourceMap[targetKey];
       if (oldSourceKey && s.fillTargetMap[oldSourceKey]) {
         this.$delete(s.fillTargetMap[oldSourceKey], targetKey);
-        this.refreshSourceStyle(oldSourceKey);
-        this.propagateDown(oldSourceKey);
+        this.refreshSourceStyle(modeKey, oldSourceKey);
+        this.propagateDown(modeKey, oldSourceKey);
       }
       this.$delete(s.fillSourceMap, targetKey);
     },
-    attachToSource(sourceKey, targetKey) {
-      const s = this.currentState;
-      this.detachFromSource(targetKey);
+    attachToSource(modeKey, sourceKey, targetKey) {
+      this.detachFromSource(modeKey, targetKey);
+      const s = this.stateOf(modeKey);
       this.$set(s.fillSourceMap, targetKey, sourceKey);
       if (!s.fillTargetMap[sourceKey]) {
         this.$set(s.fillTargetMap, sourceKey, {});
       }
       this.$set(s.fillTargetMap[sourceKey], targetKey, true);
-      this.refreshSourceStyle(sourceKey);
+      this.refreshSourceStyle(modeKey, sourceKey);
     },
-    propagateDown(sourceKey) {
-      const s = this.currentState;
+    propagateDown(modeKey, sourceKey) {
+      const s = this.stateOf(modeKey);
       const targets = s.fillTargetMap[sourceKey];
       if (!targets) return;
       Object.keys(targets).forEach((targetKey) => {
@@ -334,25 +449,25 @@ export default {
           const newVal = cloneData(s.cellData[sourceKey]);
           if (!dataEqual(oldVal, newVal)) {
             this.$set(s.cellData, targetKey, newVal);
-            this.propagateDown(targetKey);
+            this.propagateDown(modeKey, targetKey);
           }
         }
       });
     },
-    handleHeaderDblClick(col) {
-      if (!this.mode) return;
+    handleHeaderDblClick(modeKey, col) {
+      if (!modeKey) return;
       if (col < 0 || col > 6) return;
-      const s = this.currentState;
+      const s = this.stateOf(modeKey);
       this.$set(s.colHideContent, col, !s.colHideContent[col]);
-      this.$nextTick(() => {
-        scheduleAutoFit('tournamentTable', s.colHideContent);
-      });
+      this.scheduleAutoFitFor(modeKey);
     },
-    handleCellClick({ col, rowInCol, key }) {
-      if (!this.mode) return;
-      const s = this.currentState;
+    handleCellClick(modeKey, { col, rowInCol, key }) {
+      if (!modeKey) return;
+      const s = this.stateOf(modeKey);
+      const m = this.metaOf(modeKey);
+      if (!m) return;
 
-      if (col === 0 && s.selectedDlcIdx !== null && s.selectedDlcIdx >= 0 && s.selectedDlcIdx < s.dlcData.length) {
+      if (!m.noDlc && col === 0 && s.selectedDlcIdx !== null && s.selectedDlcIdx >= 0 && s.selectedDlcIdx < s.dlcData.length) {
         const mainCurrent = s.cellData[key] ? cloneData(s.cellData[key]) : null;
         const dlcCurrent = cloneData(s.dlcData[s.selectedDlcIdx]);
 
@@ -369,8 +484,8 @@ export default {
         }
 
         this.$set(s.cellData, key, { title: dlcCurrent.title, content: dlcCurrent.content });
-        this.detachFromSource(key);
-        this.propagateDown(key);
+        this.detachFromSource(modeKey, key);
+        this.propagateDown(modeKey, key);
 
         s.selectedDlcIdx = null;
         this.scheduleAutoFitAll();
@@ -378,26 +493,24 @@ export default {
       }
 
       if (s.cellData[key] === undefined) return;
-      if (col >= this.meta.columnConfig.length - 1) return;
+      if (col >= m.columnConfig.length - 1) return;
 
       const nextCol = col + 1;
-      const curRowSpan = this.meta.columnConfig[col].rowSpan;
-      const nextRowSpan = this.meta.columnConfig[nextCol].rowSpan;
+      const curRowSpan = m.columnConfig[col].rowSpan;
+      const nextRowSpan = m.columnConfig[nextCol].rowSpan;
       const ratio = Math.max(1, Math.floor(nextRowSpan / curRowSpan));
       const nextRowInCol = Math.floor(rowInCol / ratio);
       const targetKey = getCellKey(nextCol, nextRowInCol);
 
-      this.attachToSource(key, targetKey);
+      this.attachToSource(modeKey, key, targetKey);
       this.$set(s.cellData, targetKey, cloneData(s.cellData[key]));
-      this.propagateDown(targetKey);
+      this.propagateDown(modeKey, targetKey);
 
-      this.$nextTick(() => {
-        scheduleAutoFit('tournamentTable', s.colHideContent);
-      });
+      this.scheduleAutoFitFor(modeKey);
     },
-    handleCellEdit({ key, oldVal, newVal, trigger }) {
-      if (!this.mode) return;
-      const s = this.currentState;
+    handleCellEdit(modeKey, { key, oldVal, newVal, trigger }) {
+      if (!modeKey) return;
+      const s = this.stateOf(modeKey);
       let changed;
       if (newVal === undefined) {
         changed = oldVal !== undefined;
@@ -407,40 +520,40 @@ export default {
         changed = !dataEqual(oldVal, newVal);
       }
       if (changed) {
-        this.detachFromSource(key);
-        this.propagateDown(key);
+        this.detachFromSource(modeKey, key);
+        this.propagateDown(modeKey, key);
       }
-      this.$nextTick(() => {
-        scheduleAutoFit('tournamentTable', s.colHideContent);
-      });
+      this.scheduleAutoFitFor(modeKey);
     },
-    handleDlcSelect(idx) {
-      if (!this.mode) return;
-      const s = this.currentState;
+    handleDlcSelect(modeKey, idx) {
+      if (!modeKey) return;
+      const s = this.stateOf(modeKey);
       if (idx < 0 || idx >= s.dlcData.length) return;
       s.selectedDlcIdx = (s.selectedDlcIdx === idx) ? null : idx;
     },
-    handleExportCSV() {
-      if (!this.mode) return;
-      const s = this.currentState;
+    handleExportCSV(modeKey) {
+      if (!modeKey) return;
+      const s = this.stateOf(modeKey);
+      const m = this.metaOf(modeKey);
       exportCSVUtil({
         cellData: s.cellData,
-        columnConfig: this.meta.columnConfig,
-        headerLabels: this.meta.headerLabels,
-        totalRows: this.totalRows,
-        title: this.meta.title,
-        fillerName: this.fillerName,
-        mode: this.mode
+        columnConfig: m.columnConfig,
+        headerLabels: m.headerLabels,
+        totalRows: this.totalRowsOf(modeKey),
+        title: m.title,
+        fillerName: this.fillerNameMap[modeKey] || DEFAULT_FILLER,
+        mode: modeKey
       });
     },
-    async handleUploadCSV() {
-      if (!this.mode) return;
-      if (this.uploading) return;
-      if (!this.fillerName || !this.fillerName.trim()) {
+    async handleUploadCSV(modeKey) {
+      if (!modeKey) return;
+      if (this.uploadingOf(modeKey)) return;
+      const fn = this.fillerNameMap[modeKey];
+      if (!fn || !fn.trim()) {
         alert('请先填写"填表人"再上传');
         return;
       }
-      this.uploading = true;
+      this.$set(this.uploadingMap, modeKey, true);
       try {
         const folderMap = {
           '320': 'shiwen-320',
@@ -449,18 +562,21 @@ export default {
           'word64': 'shiwen-word64',
           'eat64': 'shiwen-eat64',
           'drink64': 'shiwen-drink64',
-          'ersu64': 'shiwen-ersu64'
+          'ersu64': 'shiwen-ersu64',
+          'figure64': 'shiwen-figure64',
+          'figure256': 'shiwen-figure256'
         };
-        const folder = folderMap[this.mode] || 'shiwen-64';
+        const folder = folderMap[modeKey] || 'shiwen-64';
+        const m = this.metaOf(modeKey);
         await uploadCSVUtil({
-          cellData: this.currentState.cellData,
-          columnConfig: this.meta.columnConfig,
-          headerLabels: this.meta.headerLabels,
-          totalRows: this.totalRows,
-          title: this.meta.title,
+          cellData: this.stateOf(modeKey).cellData,
+          columnConfig: m.columnConfig,
+          headerLabels: m.headerLabels,
+          totalRows: this.totalRowsOf(modeKey),
+          title: m.title,
           folder,
-          fillerName: this.fillerName,
-          mode: this.mode,
+          fillerName: fn,
+          mode: modeKey,
           onStatus: (status, errMsg) => {
             if (status === 'success') {
               alert('上传成功');
@@ -472,29 +588,36 @@ export default {
       } catch (err) {
         alert('上传失败：' + (err.message || '未知错误'));
       } finally {
-        this.uploading = false;
+        this.$set(this.uploadingMap, modeKey, false);
       }
     },
-    handleExportPNG() {
-      if (!this.mode) return;
-      exportPNGUtil({
-        fillerName: this.fillerName,
+    handleExportPNG(modeKey) {
+      if (!modeKey) return;
+      const m = this.metaOf(modeKey);
+      const isFigure = m.textMode === 'nameOnly';
+      const opts = {
+        fillerName: this.fillerNameMap[modeKey] || DEFAULT_FILLER,
         loadingCallbacks: {
           show: (t) => this.showLoading(t),
           hide: () => this.hideLoading()
         },
-        title: this.meta.title,
-        mode: this.mode
-      });
+        title: m.title,
+        mode: modeKey,
+        wrapperId: this.wrapperIdOf(modeKey),
+        tableId: this.tableIdOf(modeKey)
+      };
+      if (isFigure) {
+        opts.leftSubText = '网页制作：蟋蟀 表格原作者：xhs「LinkeArisu」QQ「2310829476」';
+      }
+      exportPNGUtil(opts);
     },
-    handleReset() {
-      if (!this.mode) return;
-      if (!confirm('确定要清空表格并恢复初始状态吗？当前表格第一列诗文将恢复原文，其他列将全部清空。')) return;
-      const m = this.mode;
-      this.resetModeState(m, false);
+    handleReset(modeKey) {
+      if (!modeKey) return;
+      if (!confirm('确定要清空表格并恢复初始状态吗？当前表格第一列将恢复原文，其他列将全部清空。')) return;
+      this.resetModeState(modeKey, false);
       this.$nextTick(() => {
-        this.ensureLoaded(m);
-        this.scheduleAutoFitAll();
+        this.ensureLoaded(modeKey);
+        this.scheduleAutoFitFor(modeKey);
       });
     },
     resetModeState(m, keepLoadFlags) {
@@ -508,17 +631,19 @@ export default {
     },
     async ensureMainData(modeKey) {
       const s = this.perMode[modeKey];
+      if (!s) return;
       const meta = MODE_META[modeKey];
       if (!s.dataLoaded) {
         s.cellData = buildInitialCellData(modeKey);
         const count = meta.columnConfig[0].count;
-        const fromFile = await loadMainFile(meta.dataFile, null);
+        const parser = meta.textMode === 'nameOnly' ? parseNameText : parseDlcText;
+        const fromFile = await loadMainFile(meta.dataFile, null, parser);
         if (fromFile && fromFile.length > 0) {
           for (let i = 0; i < count; i++) {
             const key = getCellKey(0, i);
             const poem = fromFile[i];
             if (poem) {
-              this.$set(s.cellData, key, { title: poem.title, content: poem.content });
+              this.$set(s.cellData, key, { title: poem.title, content: poem.content || '' });
             }
           }
         }
@@ -527,7 +652,12 @@ export default {
     },
     async ensureDlc(modeKey) {
       const s = this.perMode[modeKey];
+      if (!s) return;
       const meta = MODE_META[modeKey];
+      if (meta.noDlc) {
+        s.dlcLoaded = true;
+        return;
+      }
       if (!s.dlcLoaded) {
         const fb = defaultDlcByMode(modeKey);
         s.dlcData = await loadDlcFile(meta.dlcFile, fb);
@@ -543,8 +673,20 @@ export default {
     async switchMode(newMode) {
       if (this.mode === newMode) return;
       this.mode = newMode;
-      if (newMode != null && MODE_META[newMode]) {
-        await this.ensureLoaded(newMode);
+      if (newMode != null) {
+        if (this.isAggregate(newMode)) {
+          const tasks = [];
+          for (const sm of this.subModesOf(newMode)) {
+            tasks.push(this.ensureLoaded(sm));
+            if (this.zoomMap[sm] == null) this.$set(this.zoomMap, sm, DEFAULT_ZOOM);
+            if (this.fillerNameMap[sm] == null) this.$set(this.fillerNameMap, sm, DEFAULT_FILLER);
+          }
+          await Promise.all(tasks);
+        } else if (MODE_META[newMode]) {
+          if (this.zoomMap[newMode] == null) this.$set(this.zoomMap, newMode, DEFAULT_ZOOM);
+          if (this.fillerNameMap[newMode] == null) this.$set(this.fillerNameMap, newMode, DEFAULT_FILLER);
+          await this.ensureLoaded(newMode);
+        }
       }
       this.scheduleAutoFitAll();
     }

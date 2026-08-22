@@ -96,11 +96,13 @@ export async function uploadCSV(options) {
 }
 
 export async function exportPNG(options) {
-  const { fillerName, loadingCallbacks, title, mode } = options || {};
+  const { fillerName, loadingCallbacks, title, mode, wrapperId, tableId, leftSubText, middleSubText } = options || {};
   const { show, hide } = loadingCallbacks || {};
   if (show) show('正在生成长图，请稍候...');
   try {
-    const tableWrapper = document.getElementById('tableWrapper');
+    const wId = wrapperId || 'tableWrapper';
+    const tId = tableId || 'tournamentTable';
+    const tableWrapper = document.getElementById(wId);
     const safeName = (fillerName || '').trim() || '——';
     const prevOverflow = tableWrapper.style.overflow;
     const prevMaxHeight = tableWrapper.style.maxHeight;
@@ -141,14 +143,14 @@ export async function exportPNG(options) {
     const leftSpan = document.createElement('span');
     leftSpan.style.textAlign = 'left';
     leftSpan.style.flex = '1';
-    leftSpan.textContent = '网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀';
+    leftSpan.textContent = leftSubText || '网页制作：蟋蟀 诗文筛汇：嫻菜无敌 蟋蟀';
     subDiv.appendChild(leftSpan);
 
     const middleSpan = document.createElement('span');
     middleSpan.style.textAlign = 'center';
     middleSpan.style.flex = '1';
     middleSpan.style.fontSize = '11px';
-    middleSpan.textContent = '欢迎关注公众号【东坡墙】、QQ【3301590656】';
+    middleSpan.textContent = middleSubText || '欢迎关注公众号【东坡墙】、QQ【3301590656】';
     subDiv.appendChild(middleSpan);
 
     const rightSpan = document.createElement('span');
@@ -159,7 +161,7 @@ export async function exportPNG(options) {
 
     exportContainer.appendChild(subDiv);
 
-    const mainClone = document.getElementById('tournamentTable').cloneNode(true);
+    const mainClone = document.getElementById(tId).cloneNode(true);
     mainClone.style.zoom = '1';
     mainClone.querySelectorAll('th').forEach(th => { th.style.position = 'static'; });
     mainClone.querySelectorAll('th').forEach(th => { th.style.borderRadius = '0'; });

@@ -359,6 +359,24 @@ td[contenteditable="true"] {
   font-size: 14px;
   line-height: 1.3;
 }
+.poem-title.poem-name-only {
+  font-size: 18px;
+  margin-bottom: 0;
+  font-weight: 600;
+  color: #2c3e2c;
+}
+td.name-only-cell {
+  font-size: 14px;
+}
+td.name-only-cell .poem-title.poem-name-only {
+  font-size: 18px;
+}
+td.col-0.name-only-cell .poem-title.poem-name-only {
+  font-size: 15px;
+}
+td.col-1.name-only-cell .poem-title.poem-name-only {
+  font-size: 16px;
+}
 .poem-content {
   color: #4e5b4e;
   font-size: 12px;
@@ -372,6 +390,39 @@ td[contenteditable="true"] {
 }
 .champion-cell { background: #eaf3ed !important; border-color: #4a7a52 !important; }
 .champion-cell .poem-title { color: #2c3e2c !important; }
+
+/* ==================== 宋代人物致谢栏 & 子表格 ==================== */
+.acknowledge-box {
+  border: 1px solid #b8cdb8;
+  background: #faf9f6;
+  padding: 10px 14px;
+  color: #4a6a4e;
+  font-size: 13px;
+  text-align: center;
+  letter-spacing: 1px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.figure-sub-section {
+  margin-top: 18px;
+  padding-top: 4px;
+}
+.figure-sub-section + .figure-sub-section {
+  margin-top: 28px;
+}
+.table-sub-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.table-page-subtitle {
+  font-size: 16px;
+  color: #2c3e2c;
+  font-weight: 700;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
 
 /* ==================== 补充诗文 ==================== */
 .dlc-section { margin-top: 12px; }
@@ -518,8 +569,15 @@ td[contenteditable="true"] {
   td.col-1 .poem-title { font-size: 9.6px; margin-bottom: 0; }
   td.col-1 .poem-content { font-size: 8.5px; }
   .poem-title { font-size: 10px; margin-bottom: 0; }
+  .poem-title.poem-name-only { font-size: 13px; }
+  td.name-only-cell .poem-title.poem-name-only { font-size: 13px; }
+  td.col-0.name-only-cell .poem-title.poem-name-only { font-size: 9.6px; }
+  td.col-1.name-only-cell .poem-title.poem-name-only { font-size: 11px; }
   .poem-content { font-size: 8.8px; }
   .table-wrapper { max-height: 70vh; }
+  .acknowledge-box { font-size: 11px; padding: 8px 10px; letter-spacing: 0; }
+  .figure-sub-section + .figure-sub-section { margin-top: 20px; }
+  .table-page-subtitle { font-size: 13px; letter-spacing: 1px; }
   .dlc-section { margin-top: 10px; }
   .dlc-title-row { flex-wrap: wrap; }
   .dlc-title { font-size: 12px; letter-spacing: 2px; }

@@ -5,8 +5,21 @@ export const MODES = {
   WORD64: 'word64',
   EAT64: 'eat64',
   DRINK64: 'drink64',
-  ERSU64:'ersu64'
+  ERSU64: 'ersu64',
+  FIGURE: 'figure',
+  FIGURE64: 'figure64',
+  FIGURE256: 'figure256'
 };
+
+export const FIGURE_SUBMODES = [MODES.FIGURE64, MODES.FIGURE256];
+
+export function isFigureAggregate(mode) {
+  return mode === MODES.FIGURE;
+}
+
+export function isFigureMode(mode) {
+  return mode === MODES.FIGURE || mode === MODES.FIGURE64 || mode === MODES.FIGURE256;
+}
 
 export const MODE_META = {
   [MODES.M64]: {
@@ -199,6 +212,85 @@ export const MODE_META = {
       '冠军'
     ],
     dlcLabel: '二苏'
+  },
+  [MODES.FIGURE]: {
+    name: '宋代人物n选1',
+    n: 64,
+    title: '宋代人物n选1',
+    aggregate: true,
+    subModes: FIGURE_SUBMODES,
+    dataFile: '',
+    dlcFile: '',
+    firstColLabel: '',
+    columnConfig: [
+      { count: 64, rowSpan: 1 },
+      { count: 32, rowSpan: 2 },
+      { count: 16, rowSpan: 4 },
+      { count: 8,  rowSpan: 8 },
+      { count: 4,  rowSpan: 16 },
+      { count: 2,  rowSpan: 32 },
+      { count: 1,  rowSpan: 64 }
+    ],
+    headerLabels: ['64位宋代人物', '前32', '前16', '前8', '前4', '前2', '冠军'],
+    dlcLabel: '人物'
+  },
+  [MODES.FIGURE64]: {
+    name: '宋代人物64选1',
+    n: 64,
+    title: '宋代人物64选1',
+    dataFile: '宋代人物64选1.txt',
+    dlcFile: '',
+    firstColLabel: '64位宋代人物',
+    noDlc: true,
+    textMode: 'nameOnly',
+    columnConfig: [
+      { count: 64, rowSpan: 1 },
+      { count: 32, rowSpan: 2 },
+      { count: 16, rowSpan: 4 },
+      { count: 8,  rowSpan: 8 },
+      { count: 4,  rowSpan: 16 },
+      { count: 2,  rowSpan: 32 },
+      { count: 1,  rowSpan: 64 }
+    ],
+    headerLabels: [
+      '64位宋代人物',
+      '前32',
+      '前16',
+      '前8',
+      '前4',
+      '前2',
+      '冠军'
+    ],
+    dlcLabel: '人物'
+  },
+  [MODES.FIGURE256]: {
+    name: '宋代人物256选1',
+    n: 256,
+    title: '宋代人物256选1',
+    dataFile: '宋代人物256选1.txt',
+    dlcFile: '',
+    firstColLabel: '256位宋代人物',
+    noDlc: true,
+    textMode: 'nameOnly',
+    columnConfig: [
+      { count: 256, rowSpan: 1 },
+      { count: 64,  rowSpan: 4 },
+      { count: 16,  rowSpan: 16 },
+      { count: 8,   rowSpan: 32 },
+      { count: 4,   rowSpan: 64 },
+      { count: 2,   rowSpan: 128 },
+      { count: 1,   rowSpan: 256 }
+    ],
+    headerLabels: [
+      '256位宋代人物',
+      '前64',
+      '前16',
+      '前8',
+      '前4',
+      '前2',
+      '冠军'
+    ],
+    dlcLabel: '人物'
   }
 };
 

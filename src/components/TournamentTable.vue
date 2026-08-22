@@ -1,6 +1,6 @@
 <template>
-  <div class="table-wrapper" id="tableWrapper">
-    <table id="tournamentTable">
+  <div class="table-wrapper" :id="wrapperId">
+    <table :id="tableId" :class="{ 'name-only-table': textMode === 'nameOnly'}">
       <thead>
         <tr id="headerRow">
           <th
@@ -49,7 +49,10 @@ export default {
     colHideContent: { type: Array, required: true },
     columnConfig: { type: Array, required: true },
     headerLabels: { type: Array, required: true },
-    totalRows: { type: Number, required: true }
+    totalRows: { type: Number, required: true },
+    textMode: { type: String, default: 'default' },
+    wrapperId: { type: String, default: 'tableWrapper' },
+    tableId: { type: String, default: 'tournamentTable' }
   },
   data() {
     return {
@@ -78,7 +81,7 @@ export default {
       if (this.isEditing(key)) return '';
       const data = this.cellData[key];
       if (data === undefined) return '&nbsp;';
-      return formatPoemCell(data);
+      return formatPoemCell(data, this.textMode);
     },
     cellClasses(col, row) {
       const key = this.cellKey(col, this.firstRowIndex(row, col));
@@ -92,6 +95,9 @@ export default {
       }
       if (this.colHideContent[col]) {
         cls.push('hide-poem-content');
+      }
+      if (this.textMode === 'nameOnly') {
+        cls.push('name-only-cell');
       }
       return cls;
     },

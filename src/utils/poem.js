@@ -51,10 +51,16 @@ export function formatPoemString(str) {
   return `<span class="poem-content">${escapeHtml(str)}</span>`;
 }
 
-export function formatPoemCell(data) {
+export function formatPoemCell(data, textMode) {
   if (!data) return '';
   if (typeof data === 'string') {
+    if (textMode === 'nameOnly') {
+      return `<span class="poem-title poem-name-only">${escapeHtml(data)}</span>`;
+    }
     return formatPoemString(data);
+  }
+  if (textMode === 'nameOnly') {
+    return `<span class="poem-title poem-name-only">${escapeHtml(data.title || '')}</span>`;
   }
   return `<span class="poem-title">${escapeHtml(data.title)}</span><span class="poem-content">${escapeHtml(data.content)}</span>`;
 }
@@ -114,6 +120,18 @@ export function parseDlcText(raw) {
     }
     if (title || content) {
       result.push({ title: title, content: content });
+    }
+  }
+  return result;
+}
+
+export function parseNameText(raw) {
+  raw = raw.replace(/\r/g, '').replace(/\u200c/g, '').replace(/\u200b/g, '').replace(/\ufeff/g, '');
+  const result = [];
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  for (const line of lines) {
+    if (line) {
+      result.push({ title: line, content: '' });
     }
   }
   return result;
