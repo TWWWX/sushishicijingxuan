@@ -328,9 +328,18 @@ export default {
     uploadingOf(key) {
       return !!this.uploadingMap[key];
     },
-    wrapperIdOf(key) { return 'tableWrapper_' + key; },
-    tableIdOf(key) { return 'tournamentTable_' + key; },
-    dlcTableIdOf(key) { return 'dlcTable_' + key; },
+    wrapperIdOf(key) {
+      if (key === MODES.FIGURE64 || key === MODES.FIGURE256) return 'tableWrapper_' + key;
+      return 'tableWrapper';
+    },
+    tableIdOf(key) {
+      if (key === MODES.FIGURE64 || key === MODES.FIGURE256) return 'tournamentTable_' + key;
+      return 'tournamentTable';
+    },
+    dlcTableIdOf(key) {
+      if (key === MODES.FIGURE64 || key === MODES.FIGURE256) return 'dlcTable_' + key;
+      return 'dlcTable';
+    },
     async fetchRandomPoem() {
       const files = [
         '苏轼诗词精选320选1.txt',
