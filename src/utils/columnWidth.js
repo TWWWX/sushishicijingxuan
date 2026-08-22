@@ -68,9 +68,8 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
   const isNameOnly = table.classList.contains('name-only-table');
   for (let c = 0; c < colCount; c++) {
     if (!hasTdContent[c]) {
-      maxWidths[c] = 250;
-      if (isNameOnly && c > 0) maxWidths[c] = Math.round(maxWidths[c] / 2);
-      continue;
+      maxWidths[c] = 150;  // 从 250 改为 150
+      continue;            // 删除了原有的减半逻辑
     }
     const th = thCells[c];
     if (th) {
@@ -78,9 +77,7 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
       if (w > maxWidths[c]) maxWidths[c] = w;
     }
     maxWidths[c] = Math.ceil(maxWidths[c]) + 10;
-    if (isNameOnly && c > 0) {
-      maxWidths[c] = Math.max(20, Math.round(maxWidths[c] / 2));
-    }
+    // 删除了原有的 if (isNameOnly && c > 0) 减半逻辑
   }
 
   for (let c = 0; c < colCount; c++) {
