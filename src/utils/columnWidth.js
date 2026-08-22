@@ -65,9 +65,11 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
     }
   }
 
+  const isNameOnly = table.classList.contains('name-only-table');
   for (let c = 0; c < colCount; c++) {
     if (!hasTdContent[c]) {
       maxWidths[c] = 250;
+      if (isNameOnly && c > 0) maxWidths[c] = Math.round(maxWidths[c] / 2);
       continue;
     }
     const th = thCells[c];
@@ -76,6 +78,9 @@ export function autoFitColumnWidths(tableId, hideContentArr) {
       if (w > maxWidths[c]) maxWidths[c] = w;
     }
     maxWidths[c] = Math.ceil(maxWidths[c]) + 10;
+    if (isNameOnly && c > 0) {
+      maxWidths[c] = Math.max(20, Math.round(maxWidths[c] / 2));
+    }
   }
 
   for (let c = 0; c < colCount; c++) {
