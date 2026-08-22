@@ -2,7 +2,10 @@ export const MODES = {
   M64: '64',
   M320: '320',
   POEM64: 'poem64',
-  WORD64: 'word64'
+  WORD64: 'word64',
+  EAT64: 'eat64',
+  DRINK64: 'drink64',
+  ERSU64:'ersu64'
 };
 
 export const MODE_META = {
@@ -113,6 +116,89 @@ export const MODE_META = {
       '冠军'
     ],
     dlcLabel: '词'
+  },
+  [MODES.EAT64]: {
+    name: '吃吃吃64选1',
+    n: 64,
+    title: '苏轼吃吃吃64选1',
+    dataFile: '苏轼吃吃吃精选64选1.txt',
+    dlcFile: '苏轼吃吃吃精选64选1dlc.txt',
+    firstColLabel: '64首苏轼吃吃吃',
+    columnConfig: [
+      { count: 64, rowSpan: 1 },
+      { count: 32, rowSpan: 2 },
+      { count: 16, rowSpan: 4 },
+      { count: 8,  rowSpan: 8 },
+      { count: 4,  rowSpan: 16 },
+      { count: 2,  rowSpan: 32 },
+      { count: 1,  rowSpan: 64 }
+    ],
+    headerLabels: [
+      '64首苏轼吃吃吃',
+      '前32',
+      '前16',
+      '前8',
+      '前4',
+      '前2',
+      '冠军'
+    ],
+    dlcLabel: '吃吃吃'
+  },
+  
+  [MODES.DRINK64]: {
+    name: '喝喝喝64选1',
+    n: 64,
+    title: '苏轼喝喝喝64选1',
+    dataFile: '苏轼喝喝喝精选64选1.txt',
+    dlcFile: '苏轼喝喝喝精选64选1dlc.txt',
+    firstColLabel: '64首苏轼喝喝喝',
+    columnConfig: [
+      { count: 64, rowSpan: 1 },
+      { count: 32, rowSpan: 2 },
+      { count: 16, rowSpan: 4 },
+      { count: 8,  rowSpan: 8 },
+      { count: 4,  rowSpan: 16 },
+      { count: 2,  rowSpan: 32 },
+      { count: 1,  rowSpan: 64 }
+    ],
+    headerLabels: [
+      '64首苏轼喝喝喝',
+      '前32',
+      '前16',
+      '前8',
+      '前4',
+      '前2',
+      '冠军'
+    ],
+    dlcLabel: '喝喝喝'
+  },
+  
+  [MODES.ERSU64]: {
+    name: '二苏诗文64选1',
+    n: 64,
+    title: '二苏诗文64选1',
+    dataFile: '二苏精选64选1.txt',
+    dlcFile: '二苏精选64选1dlc.txt',
+    firstColLabel: '64首二苏诗文',
+    columnConfig: [
+      { count: 64, rowSpan: 1 },
+      { count: 32, rowSpan: 2 },
+      { count: 16, rowSpan: 4 },
+      { count: 8,  rowSpan: 8 },
+      { count: 4,  rowSpan: 16 },
+      { count: 2,  rowSpan: 32 },
+      { count: 1,  rowSpan: 64 }
+    ],
+    headerLabels: [
+      '64首二苏诗文',
+      '前32',
+      '前16',
+      '前8',
+      '前4',
+      '前2',
+      '冠军'
+    ],
+    dlcLabel: '二苏'
   }
 };
 

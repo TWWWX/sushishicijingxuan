@@ -46,6 +46,27 @@
             <div class="card-subtitle">64选1</div>
           </div>
         </div>
+        <div class="entry-card" @click="switchMode('eat64')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">苏轼吃吃吃</div>
+            <div class="card-subtitle">64选1</div>
+          </div>
+        </div>
+        <div class="entry-card" @click="switchMode('drink64')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">苏轼喝喝喝</div>
+            <div class="card-subtitle">64选1</div>
+          </div>
+        </div>
+                <div class="entry-card" @click="switchMode('ersu64')">
+          <div class="card-deco-bar"></div>
+          <div class="card-body">
+            <div class="card-title">二苏诗文</div>
+            <div class="card-subtitle">64选1</div>
+          </div>
+        </div>
       </div>
 
       <div class="random-poem">
@@ -63,6 +84,9 @@
           <div class="tab" :class="{ active: mode === '320' }" @click="switchMode('320')">苏轼作品320选1</div>
           <div class="tab" :class="{ active: mode === 'poem64' }" @click="switchMode('poem64')">苏轼诗作64选1</div>
           <div class="tab" :class="{ active: mode === 'word64' }" @click="switchMode('word64')">苏轼词作64选1</div>
+          <div class="tab" :class="{ active: mode === 'eat64' }" @click="switchMode('eat64')">苏轼吃吃吃64选1</div>
+          <div class="tab" :class="{ active: mode === 'drink64' }" @click="switchMode('drink64')">苏轼喝喝喝64选1</div>
+          <div class="tab" :class="{ active: mode === 'ersu64' }" @click="switchMode('ersu64')">二苏诗文64选1</div>
         </div>
       </div>
 
@@ -179,7 +203,10 @@ export default {
         [MODES.M64]: freshState(),
         [MODES.M320]: freshState(),
         [MODES.POEM64]: freshState(),
-        [MODES.WORD64]: freshState()
+        [MODES.WORD64]: freshState(),
+        [MODES.EAT64]: freshState(),
+        [MODES.DRINK64]: freshState(),
+        [MODES.ERSU64]: freshState()
       }
     };
   },
@@ -223,7 +250,13 @@ export default {
         '苏轼诗精选64选1.txt',
         '苏轼诗精选64选1dlc.txt',
         '苏轼词精选64选1.txt',
-        '苏轼词精选64选1dlc.txt'
+        '苏轼词精选64选1dlc.txt',
+        '苏轼吃吃吃精选64选1.txt',
+        '苏轼吃吃吃精选64选1dlc.txt',
+        '苏轼喝喝喝精选64选1.txt',
+        '苏轼喝喝喝精选64选1dlc.txt',
+        '二苏精选64选1.txt',
+        '二苏精选64选1dlc.txt'
       ];
       const all = [];
       for (const f of files) {
@@ -413,7 +446,10 @@ export default {
           '320': 'shiwen-320',
           '64': 'shiwen-64',
           'poem64': 'shiwen-poem64',
-          'word64': 'shiwen-word64'
+          'word64': 'shiwen-word64',
+          'eat64': 'shiwen-eat64',
+          'drink64': 'shiwen-drink64',
+          'ersu64': 'shiwen-ersu64'
         };
         const folder = folderMap[this.mode] || 'shiwen-64';
         await uploadCSVUtil({
