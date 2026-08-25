@@ -67,7 +67,7 @@
             <div class="card-subtitle">64选1</div>
           </div>
         </div>
-        <div class="entry-card" @click="switchMode('figure')">
+        <div class="entry-card" @click="switchMode('song')">
           <div class="card-deco-bar"></div>
           <div class="card-body">
             <div class="card-title">宋代人物</div>
@@ -94,7 +94,7 @@
           <div class="tab" :class="{ active: mode === 'eat64' }" @click="switchMode('eat64')">苏轼吃吃吃64选1</div>
           <div class="tab" :class="{ active: mode === 'drink64' }" @click="switchMode('drink64')">苏轼喝喝喝64选1</div>
           <div class="tab" :class="{ active: mode === 'ersu64' }" @click="switchMode('ersu64')">二苏诗文64选1</div>
-          <div class="tab" :class="{ active: mode === 'figure' }" @click="switchMode('figure')">宋代人物n选1</div>
+          <div class="tab" :class="{ active: mode === 'song' }" @click="switchMode('song')">宋代人物n选1</div>
         </div>
       </div>
 

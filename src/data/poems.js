@@ -6,7 +6,7 @@ export const MODES = {
   EAT64: 'eat64',
   DRINK64: 'drink64',
   ERSU64: 'ersu64',
-  FIGURE: 'figure',
+  FIGURE: 'song',
   FIGURE64: 'figure64',
   FIGURE256: 'figure256'
 };
