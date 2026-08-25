@@ -627,7 +627,7 @@ export default {
       }
       const empty = this.countEmptyCells(modeKey);
       if (empty > 0) {
-        this.showToast(`请把表格每一格都填满后再上传，还剩 ${empty} 个空白单元格`, 'warn', 3000);
+        this.showToast(`出于数据收集考虑，上传前请填满表中 ${empty} 个空白单元格`, 'warn', 3000);
         return;
       }
       this.$set(this.uploadingMap, modeKey, true);
