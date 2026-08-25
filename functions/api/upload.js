@@ -42,8 +42,18 @@ export async function onRequest(context) {
     );
   }
 
-  // 文件夹白名单
-  if (!["shiwen-320", "shiwen-64", "shiwen-poem64", "shiwen-word64"].includes(folder)) {
+  // 文件夹白名单（与前端 App.vue folderMap 一一对应）
+  if (![
+    "shiwen-320",
+    "shiwen-64",
+    "shiwen-poem64",
+    "shiwen-word64",
+    "shiwen-eat64",
+    "shiwen-drink64",
+    "shiwen-ersu64",
+    "shiwen-figure64",
+    "shiwen-figure256"
+  ].includes(folder)) {
     return corsResponse(
       JSON.stringify({ error: "不允许的文件夹名称" }),
       403,
