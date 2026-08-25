@@ -2,7 +2,7 @@ import html2canvas from 'html2canvas';
 import { getCellKey } from '../data/poems';
 
 const USER_STORAGE_KEY = 'ss_user_id';
-const USER_COOKIE_KEY = 'ss_user_id';
+const USER_COOKIE_KEY = 'ss_user_cookie';
 const ID_LEN = 16;
 
 function randomId(len) {
@@ -34,25 +34,31 @@ function getCookie(name) {
   return '';
 }
 
-// Cookie + LocalStorage 双重持久化的用户标识，两者都参与文件名
-export function getStableUserId() {
+// 首次访问页面就确保生成并写入 LocalStorage；Cookie 作为独立的第二重标识
+export function ensureUserId() {
+  // LocalStorage：第一次访问就生成并持久化；一旦存在永不覆盖
   let storageId = '';
-  let cookieId = '';
-
   try {
     storageId = localStorage.getItem(USER_STORAGE_KEY) || '';
   } catch (e) { storageId = ''; }
-  cookieId = getCookie(USER_COOKIE_KEY);
-
-  if (!storageId || !cookieId) {
-    const merged = storageId || cookieId || randomId(ID_LEN);
-    if (!storageId) storageId = merged;
-    if (!cookieId) cookieId = merged;
+  if (!storageId) {
+    storageId = randomId(ID_LEN);
     try { localStorage.setItem(USER_STORAGE_KEY, storageId); } catch (e) {}
+  }
+
+  // Cookie：独立生成的备份标识；不存在时补齐，不污染 localStorage
+  let cookieId = getCookie(USER_COOKIE_KEY);
+  if (!cookieId) {
+    cookieId = randomId(ID_LEN);
     setCookie(USER_COOKIE_KEY, cookieId, 365);
   }
 
   return { storageId, cookieId };
+}
+
+// 上传时读取已在首次访问时生成好的双重标识
+export function getStableUserId() {
+  return ensureUserId();
 }
 
 function safeSegment(s) {
@@ -129,7 +135,7 @@ export async function uploadCSV(options) {
     const csvContent = getCSVString({ cellData, columnConfig, headerLabels, totalRows, title });
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const { storageId, cookieId } = getStableUserId();
-    // 文件名以 Cookie + LocalStorage 双重标识为前缀，不包含时间，达到同用户多次上传自动覆盖
+    // 文件名仅使用 Cookie + LocalStorage 双重用户标识与模式标识，不含填表人，同用户同表格多次上传自动覆盖
     const fileName = `${safeSegment(cookieId || 'none')}_${safeSegment(storageId || 'none')}_${safeSegment(mode || '')}.csv`;
     const apiUrl = `/api/upload?fileName=${encodeURIComponent(fileName)}&folder=${encodeURIComponent(folder)}`;
     const resp = await fetch(apiUrl);
