@@ -162,13 +162,21 @@ export async function uploadCSV(options) {
 }
 
 export async function exportPNG(options) {
-  const { fillerName, loadingCallbacks, title, mode, wrapperId, tableId, leftSubText, middleSubText } = options || {};
+  const { fillerName, loadingCallbacks, title, mode, wrapperId, tableId, leftSubText, middleSubText, onError } = options || {};
   const { show, hide } = loadingCallbacks || {};
   if (show) show('正在生成长图，请稍候...');
   try {
     const wId = wrapperId || 'tableWrapper';
     const tId = tableId || 'tournamentTable';
     const tableWrapper = document.getElementById(wId);
+    const tableEl = document.getElementById(tId);
+    if (!tableWrapper || !tableEl) {
+      const msg = '未找到表格容器，无法导出图片';
+      if (hide) hide();
+      if (onError) onError(msg);
+      else console.error(msg);
+      return;
+    }
     const safeName = (fillerName || '').trim() || '——';
     const prevOverflow = tableWrapper.style.overflow;
     const prevMaxHeight = tableWrapper.style.maxHeight;
@@ -260,6 +268,8 @@ export async function exportPNG(options) {
   } catch (err) {
     console.error(err);
     if (hide) hide();
-    alert('导出图片失败：' + err.message);
+    const msg = '导出图片失败：' + (err.message || err);
+    if (onError) onError(msg);
+    else alert(msg);
   }
 }

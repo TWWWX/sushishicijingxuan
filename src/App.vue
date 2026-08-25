@@ -191,6 +191,13 @@
     </div>
 
     <LoadingMask :visible="loadingVisible" :text="loadingText" />
+
+    <!-- 轻反馈 Toast -->
+    <transition name="toast-fade">
+      <div v-if="toast.show" class="toast-wrap" :class="['toast-' + toast.type]">
+        <span class="toast-text">{{ toast.text }}</span>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -260,6 +267,8 @@ export default {
       mode: null,
       loadingVisible: false,
       loadingText: '正在处理...',
+      toast: { show: false, text: '', type: 'info' },
+      _toastTimer: null,
       randomPoemContent: '',
       randomPoemTitle: '',
       fillerNameMap: {},
@@ -414,6 +423,26 @@ export default {
     hideLoading() {
       this.loadingVisible = false;
     },
+    // 轻反馈 Toast：success / warn / error / info
+    showToast(text, type = 'info', duration) {
+      if (!text) return;
+      if (this._toastTimer) {
+        clearTimeout(this._toastTimer);
+        this._toastTimer = null;
+      }
+      const t = (type && typeof type === 'string') ? type : 'info';
+      const durationMap = { success: 2000, warn: 2000, error: 3000, info: 2000 };
+      const dur = typeof duration === 'number' ? duration : (durationMap[t] || 2000);
+      // 先触发 leave 动画再切入，避免同帧复用 transition 不生效
+      this.toast = { show: false, text: '', type: 'info' };
+      this.$nextTick(() => {
+        this.toast = { show: true, text, type: t };
+        this._toastTimer = setTimeout(() => {
+          this.toast = { show: false, text: this.toast.text, type: this.toast.type };
+          this._toastTimer = null;
+        }, dur);
+      });
+    },
     scheduleAutoFitFor(key) {
       this.$nextTick(() => {
         scheduleAutoFit(this.tableIdOf(key), this.stateOf(key).colHideContent);
@@ -562,12 +591,43 @@ export default {
         mode: modeKey
       });
     },
+    // 返回指定表格下所有必填单元格（每个 columnConfig 的每一项行首）的未填总数；0 即已填满
+    countEmptyCells(modeKey) {
+      const s = this.stateOf(modeKey);
+      const m = this.metaOf(modeKey);
+      if (!s || !m || !m.columnConfig) return 0;
+      let empty = 0;
+      for (let c = 0; c < m.columnConfig.length; c++) {
+        const count = m.columnConfig[c].count || 0;
+        for (let i = 0; i < count; i++) {
+          const key = getCellKey(c, i);
+          const v = s.cellData[key];
+          if (v === undefined || v === null || v === '') {
+            empty += 1;
+            continue;
+          }
+          if (typeof v === 'string') {
+            if (v.trim() === '') empty += 1;
+          } else if (typeof v === 'object') {
+            const t = (v.title === undefined || v.title === null) ? '' : String(v.title);
+            const cc = (v.content === undefined || v.content === null) ? '' : String(v.content);
+            if (t.trim() === '' && cc.trim() === '') empty += 1;
+          }
+        }
+      }
+      return empty;
+    },
     async handleUploadCSV(modeKey) {
       if (!modeKey) return;
       if (this.uploadingOf(modeKey)) return;
       const fn = this.fillerNameMap[modeKey];
       if (!fn || !fn.trim()) {
-        alert('请先填写"填表人"再上传');
+        this.showToast('请填写填表人', 'warn');
+        return;
+      }
+      const empty = this.countEmptyCells(modeKey);
+      if (empty > 0) {
+        this.showToast(`请把表格每一格都填满后再上传，还剩 ${empty} 个空白单元格`, 'warn', 3000);
         return;
       }
       this.$set(this.uploadingMap, modeKey, true);
@@ -596,14 +656,14 @@ export default {
           mode: modeKey,
           onStatus: (status, errMsg) => {
             if (status === 'success') {
-              alert('上传成功');
+              this.showToast('上传成功，感谢您的投稿！', 'success');
             } else if (status === 'error') {
-              alert('上传失败：' + (errMsg || '未知错误'));
+              this.showToast('上传失败：' + (errMsg || '未知错误'), 'error', 3000);
             }
           }
         });
       } catch (err) {
-        alert('上传失败：' + (err.message || '未知错误'));
+        this.showToast('上传失败：' + (err.message || '未知错误'), 'error', 3000);
       } finally {
         this.$set(this.uploadingMap, modeKey, false);
       }
@@ -621,7 +681,8 @@ export default {
         title: m.title,
         mode: modeKey,
         wrapperId: this.wrapperIdOf(modeKey),
-        tableId: this.tableIdOf(modeKey)
+        tableId: this.tableIdOf(modeKey),
+        onError: (msg) => this.showToast(msg, 'error', 3000)
       };
       if (isFigure) {
         opts.leftSubText = '网页制作：蟋蟀 表格原作者：xhs「LinkeArisu」QQ「2310829476」';
@@ -736,3 +797,49 @@ export default {
   }
 };
 </script>
+
+<style>
+/* 轻反馈 Toast */
+.toast-wrap {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  min-width: 160px;
+  max-width: 80vw;
+  padding: 12px 24px;
+  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 1px;
+  text-align: center;
+  color: #fff;
+  background: rgba(44, 62, 44, 0.88);
+  border: 1px solid rgba(184, 205, 184, 0.5);
+  box-shadow: 0 8px 24px rgba(44, 62, 44, 0.25);
+  user-select: none;
+}
+.toast-wrap.toast-success {
+  background: rgba(74, 122, 82, 0.92);
+  border-color: #8fae93;
+}
+.toast-wrap.toast-error {
+  background: rgba(139, 115, 115, 0.95);
+  border-color: #a88f8f;
+}
+.toast-wrap.toast-warn {
+  background: rgba(102, 128, 106, 0.95);
+  border-color: #b8cdb8;
+}
+@media (max-width: 700px) {
+  .toast-wrap { font-size: 13px; padding: 10px 20px; min-width: 140px; }
+}
+.toast-fade-enter-from, .toast-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -60%);
+}
+.toast-fade-enter-active, .toast-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+</style>
