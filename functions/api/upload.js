@@ -33,10 +33,20 @@ export async function onRequest(context) {
   const fileName = url.searchParams.get("fileName");
   const folder = url.searchParams.get("folder");
 
-  // 参数校验
+  // 参数校验：fileName 由前端注入 Cookie + LocalStorage 双重标识，不在此处加随机前缀，以实现同用户多次上传自动覆盖（同 Key 重写）
   if (!fileName || !folder) {
     return corsResponse(
       JSON.stringify({ error: "缺少 fileName 或 folder 参数" }),
+      400,
+      { "Content-Type": "application/json" }
+    );
+  }
+
+  // 文件名安全过滤：禁止路径穿越字符，仅保留字母/数字/下划线/短横线/点
+  const safeName = fileName.replace(/[^A-Za-z0-9._-]/g, '_');
+  if (!safeName || safeName.length > 255) {
+    return corsResponse(
+      JSON.stringify({ error: "不合法的文件名" }),
       400,
       { "Content-Type": "application/json" }
     );
@@ -61,7 +71,8 @@ export async function onRequest(context) {
     );
   }
 
-  const uniqueKey = `${folder}/${Date.now()}-${fileName}`;
+  // 同 Key 上传时，R2 PutObject 默认会直接覆盖前版本，因此每个用户同表格始终只保留最新一份
+  const uniqueKey = `${folder}/${safeName}`;
 
   const R2 = new S3Client({
     region: "auto",

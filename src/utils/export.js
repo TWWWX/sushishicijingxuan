@@ -1,6 +1,64 @@
 import html2canvas from 'html2canvas';
 import { getCellKey } from '../data/poems';
 
+const USER_STORAGE_KEY = 'ss_user_id';
+const USER_COOKIE_KEY = 'ss_user_id';
+const ID_LEN = 16;
+
+function randomId(len) {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let s = '';
+  for (let i = 0; i < len; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  return s;
+}
+
+function setCookie(name, value, days) {
+  try {
+    const d = new Date();
+    d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+    const secure = location.protocol === 'https:' ? ';Secure' : '';
+    document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/;SameSite=Lax${secure}`;
+  } catch (e) {}
+}
+
+function getCookie(name) {
+  try {
+    const key = name + '=';
+    const parts = document.cookie ? document.cookie.split(';') : [];
+    for (let i = 0; i < parts.length; i++) {
+      let c = parts[i];
+      while (c.charAt(0) === ' ') c = c.substring(1);
+      if (c.indexOf(key) === 0) return c.substring(key.length);
+    }
+  } catch (e) {}
+  return '';
+}
+
+// Cookie + LocalStorage 双重持久化的用户标识，两者都参与文件名
+export function getStableUserId() {
+  let storageId = '';
+  let cookieId = '';
+
+  try {
+    storageId = localStorage.getItem(USER_STORAGE_KEY) || '';
+  } catch (e) { storageId = ''; }
+  cookieId = getCookie(USER_COOKIE_KEY);
+
+  if (!storageId || !cookieId) {
+    const merged = storageId || cookieId || randomId(ID_LEN);
+    if (!storageId) storageId = merged;
+    if (!cookieId) cookieId = merged;
+    try { localStorage.setItem(USER_STORAGE_KEY, storageId); } catch (e) {}
+    setCookie(USER_COOKIE_KEY, cookieId, 365);
+  }
+
+  return { storageId, cookieId };
+}
+
+function safeSegment(s) {
+  return String(s || '').replace(/[\\/:*?"<>|\s]/g, '_').substring(0, 64);
+}
+
 export function formatDate() {
   const d = new Date();
   return d.getFullYear() +
@@ -70,7 +128,9 @@ export async function uploadCSV(options) {
   try {
     const csvContent = getCSVString({ cellData, columnConfig, headerLabels, totalRows, title });
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const fileName = (fillerName || '未署名') + '_sushishiwen_' + (mode || '') + '_' + formatDate() + '.csv';
+    const { storageId, cookieId } = getStableUserId();
+    // 文件名以 Cookie + LocalStorage 双重标识为前缀，不包含时间，达到同用户多次上传自动覆盖
+    const fileName = `${safeSegment(cookieId || 'none')}_${safeSegment(storageId || 'none')}_${safeSegment(mode || '')}.csv`;
     const apiUrl = `/api/upload?fileName=${encodeURIComponent(fileName)}&folder=${encodeURIComponent(folder)}`;
     const resp = await fetch(apiUrl);
     if (!resp.ok) {
