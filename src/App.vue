@@ -290,6 +290,14 @@ export default {
   },
   mounted() {
     this.fetchRandomPoem();
+    const initialMode = this.parseHash();
+    window.addEventListener('hashchange', this.onHashChange);
+    if (initialMode !== this.mode) {
+      this.switchMode(initialMode, false);
+    }
+  },
+  beforeDestroy() {
+    window.removeEventListener('hashchange', this.onHashChange);
   },
   watch: {
     mode() {
@@ -679,8 +687,34 @@ export default {
         this.ensureDlc(modeKey)
       ]);
     },
-    async switchMode(newMode) {
-      if (this.mode === newMode) return;
+    parseHash() {
+      const raw = (window.location.hash || '').replace(/^#\/?/, '');
+      if (!raw) return null;
+      if (MODE_META[raw]) return raw;
+      return null;
+    },
+    onHashChange() {
+      const m = this.parseHash();
+      if (m !== this.mode) {
+        this.switchMode(m, false);
+      }
+    },
+    applyHash(newMode) {
+      const target = newMode ? '#/' + newMode : '';
+      if ((window.location.hash || '') !== target) {
+        if (target) {
+          window.location.hash = target;
+        } else {
+          history.pushState('', document.title, window.location.pathname + window.location.search);
+        }
+      }
+    },
+    async switchMode(newMode, updateHash = true) {
+      if (this.mode === newMode) {
+        if (updateHash) this.applyHash(newMode);
+        return;
+      }
+      if (updateHash) this.applyHash(newMode);
       this.mode = newMode;
       if (newMode != null) {
         if (this.isAggregate(newMode)) {
