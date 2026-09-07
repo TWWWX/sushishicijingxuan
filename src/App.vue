@@ -2,6 +2,8 @@
   <div id="app-root">
     <!-- 主页 -->
     <div v-if="!mode" class="homepage">
+      <!-- 竹子装饰：仅首页渲染，位于背景之上、内容之下 -->
+      <img class="bamboo" src="/竹.png" alt="">
       <div class="home-header">
         <div class="home-title-row">
           <span class="title-line"></span>
