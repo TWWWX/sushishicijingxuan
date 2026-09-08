@@ -224,7 +224,13 @@ export async function exportPNG(options) {
     middleSpan.style.textAlign = 'center';
     middleSpan.style.flex = '1';
     middleSpan.style.fontSize = '11px';
-    middleSpan.textContent = middleSubText || '欢迎关注公众号【东坡墙】、QQ【3301590656】';
+    if (middleSubText) {
+        // 外部传入文本保持纯文本，避免注入
+        middleSpan.textContent = middleSubText;
+    } else {
+        // 默认 QQ 文案，号码可点击（静态常量，安全）
+        middleSpan.innerHTML = '欢迎关注公众号【东坡墙】、QQ【<a href="https://qm.qq.com/q/sogmSgxpcW" target="_blank" rel="noopener">3301590656</a>】';
+    }
     subDiv.appendChild(middleSpan);
 
     const rightSpan = document.createElement('span');
