@@ -15,8 +15,8 @@
 
       <div class="author-note-wrapper">
         <div class="author-note-bar"></div>
-        <div class="author-note-box">网页制作 - 蟋蟀丨诗文筛汇 - 嫻菜无敌 蟋蟀
-欢迎关注公众号「东坡墙」QQ「<a href="https://qm.qq.com/q/sogmSgxpcW" target="_blank" rel="noopener">3301590656</a>」</div>
+        <div class="author-note-box"><span>网页制作 - 蟋蟀丨诗文筛汇 - 嫻菜无敌 蟋蟀
+欢迎关注公众号「东坡墙」QQ「<a href="https://qm.qq.com/q/sogmSgxpcW" target="_blank" rel="noopener">3301590656</a>」</span></div>
       </div>
 
       <div class="entry-cards">
